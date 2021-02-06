@@ -10,15 +10,15 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-class BuyAsJson implements Json {
+class BuyOrderResultAsJson implements Json {
     private static final String COMMAND = "buy";
     private final Json result;
 
-    BuyAsJson(String currencyPair, BigDecimal rate, BigDecimal amount) {
+    BuyOrderResultAsJson(String currencyPair, BigDecimal rate, BigDecimal amount) {
         this(currencyPair, rate, amount, false, false, false);
     }
 
-    BuyAsJson(String currencyPair, BigDecimal rate, BigDecimal amount, boolean fillOrKill, boolean immediateOrCancel, boolean postOnly) {
+    BuyOrderResultAsJson(String currencyPair, BigDecimal rate, BigDecimal amount, boolean fillOrKill, boolean immediateOrCancel, boolean postOnly) {
         List<NameValuePair> additionalPostParams = new ArrayList<>();
         additionalPostParams.add(new BasicNameValuePair("currencyPair", currencyPair));
         additionalPostParams.add(new BasicNameValuePair("rate", rate.toPlainString()));
