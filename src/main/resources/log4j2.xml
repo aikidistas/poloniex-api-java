@@ -6,7 +6,10 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="com.cf" level="trace" additivity="false">
+        <Logger name="api.cf" level="trace" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+        <Logger name="org.aikidistas" level="trace" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
         <Logger name="org.apache" level="info" additivity="false">
