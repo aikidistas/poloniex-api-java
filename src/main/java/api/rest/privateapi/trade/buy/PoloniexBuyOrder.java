@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 
 @Log4j2
-public class Buy implements BuyOrder {
+public class PoloniexBuyOrder implements BuyOrder {
     private final static DateTimeFormatter DATE_TIME_FORMATTER =
             new DateTimeFormatterBuilder()
                     .appendPattern("yyyy-MM-dd HH:mm:ss")
@@ -25,15 +25,15 @@ public class Buy implements BuyOrder {
 
     private final Json jsonSource;
 
-    public Buy(String currencyPair, BigDecimal buyPrice, BigDecimal amount) {
-        this(new BuyAsJson(currencyPair, buyPrice, amount));
+    public PoloniexBuyOrder(String currencyPair, BigDecimal buyPrice, BigDecimal amount) {
+        this(new BuyOrderResultAsJson(currencyPair, buyPrice, amount));
     }
 
-    public Buy(String currencyPair, BigDecimal buyPrice, BigDecimal amount, boolean fillOrKill, boolean immediateOrCancel, boolean postOnly) {
-        this(new BuyAsJson(currencyPair, buyPrice, amount, fillOrKill, immediateOrCancel, postOnly));
+    public PoloniexBuyOrder(String currencyPair, BigDecimal buyPrice, BigDecimal amount, boolean fillOrKill, boolean immediateOrCancel, boolean postOnly) {
+        this(new BuyOrderResultAsJson(currencyPair, buyPrice, amount, fillOrKill, immediateOrCancel, postOnly));
     }
 
-    public Buy(Json jsonSource) {
+    public PoloniexBuyOrder(Json jsonSource) {
         this.jsonSource = jsonSource;
     }
 

@@ -11,7 +11,7 @@ import api.rest.privateapi.read.ordertrades.OrderTrades;
 import api.rest.privateapi.read.ordertrades.dto.OrderTradeDto;
 import api.rest.privateapi.read.tradehistory.TradeHistoryPrivate;
 import api.rest.privateapi.read.tradehistory.dto.TradeHistoryDto;
-import api.rest.privateapi.trade.buy.Buy;
+import api.rest.privateapi.trade.buy.PoloniexBuyOrder;
 import api.rest.privateapi.trade.cancel.CancelOrderOrderImpl;
 import api.rest.privateapi.trade.dto.OrderResultDto;
 import api.rest.publicapi.read.chartdata.ChartData;
@@ -267,7 +267,7 @@ public class PoloniexDataMapperTest {
     public void mapBuyTradeOrder() {
         String data = "{\"orderNumber\":31226040,\"resultingTrades\":[{\"amount\":\"338.8732\",\"date\":\"2014-10-18 23:03:21\",\"rate\":\"0.00000173\",\"total\":\"0.00058625\",\"tradeID\":\"16164\",\"type\":\"buy\"}]}";
 
-        OrderResultDto orderResult = new Buy(() -> data).execute();
+        OrderResultDto orderResult = new PoloniexBuyOrder(() -> data).execute();
         assertEquals(31226040L, orderResult.orderNumber.longValue());
         assertEquals(1, orderResult.resultingTrades.size());
         assertEquals(BigDecimal.valueOf(338.8732), orderResult.resultingTrades.get(0).amount);
@@ -283,7 +283,7 @@ public class PoloniexDataMapperTest {
     @Test
     public void mapFailedBuyTradeOrderWithError() {
         String data = "{\"error\":\"Unable to fill order completely.\"}";
-        OrderResultDto orderResult = new Buy(() -> data).execute(); //mapper.mapTradeOrder(data);
+        OrderResultDto orderResult = new PoloniexBuyOrder(() -> data).execute(); //mapper.mapTradeOrder(data);
         assertNull(orderResult.orderNumber);
         assertNull(orderResult.resultingTrades);
         assertNotNull(orderResult.error);
