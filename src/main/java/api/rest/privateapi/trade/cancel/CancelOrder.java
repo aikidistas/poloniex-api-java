@@ -1,7 +1,7 @@
 package api.rest.privateapi.trade.cancel;
 
-import api.rest.privateapi.trade.Order;
+import api.rest.privateapi.trade.ApiOrderException;
 
-public interface CancelOrder extends Order<Boolean> {
-
+public interface CancelOrder {
+    boolean execute() throws ApiOrderException;
 }

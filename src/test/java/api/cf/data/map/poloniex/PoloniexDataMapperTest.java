@@ -12,7 +12,7 @@ import api.rest.privateapi.read.ordertrades.dto.OrderTradeDto;
 import api.rest.privateapi.read.tradehistory.TradeHistoryPrivate;
 import api.rest.privateapi.read.tradehistory.dto.TradeHistoryDto;
 import api.rest.privateapi.trade.buy.PoloniexBuyOrder;
-import api.rest.privateapi.trade.cancel.CancelOrderOrderImpl;
+import api.rest.privateapi.trade.cancel.PoloniexCancelOrder;
 import api.rest.privateapi.trade.dto.OrderResultDto;
 import api.rest.publicapi.read.chartdata.ChartData;
 import api.rest.publicapi.read.chartdata.dto.ChartDataDto;
@@ -250,7 +250,7 @@ public class PoloniexDataMapperTest {
     @Test
     public void mapCancelOrderSuccessReturnsTrue() {
         String data = "{\"success\":1}";
-        boolean result = new CancelOrderOrderImpl(() -> data).execute(); //mapper.mapCancelOrder(data);
+        boolean result = new PoloniexCancelOrder(() -> data).execute(); //mapper.mapCancelOrder(data);
         assertTrue(result);
     }
 
@@ -258,7 +258,7 @@ public class PoloniexDataMapperTest {
     @Test
     public void mapCancelOrderFailureReturnsFalse() {
         String data = "{\"success\":0}";
-        boolean result = new CancelOrderOrderImpl(() -> data).execute();
+        boolean result = new PoloniexCancelOrder(() -> data).execute();
         assertFalse(result);
     }
 

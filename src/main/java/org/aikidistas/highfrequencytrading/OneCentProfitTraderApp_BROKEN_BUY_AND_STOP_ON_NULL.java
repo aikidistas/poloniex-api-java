@@ -5,7 +5,7 @@ import api.rest.privateapi.read.orderstatus.OrderStatus;
 import api.rest.privateapi.read.orderstatus.dto.OrderStatusDto;
 import api.rest.privateapi.trade.ApiOrderException;
 import api.rest.privateapi.trade.dto.OrderResultDto;
-import api.rest.privateapi.trade.sell.SellOrder;
+import api.rest.privateapi.trade.sell.PoloniexSellOrder;
 import api.rest.publicapi.read.ticker.Ticker;
 import api.rest.publicapi.read.ticker.TickerData;
 import api.rest.publicapi.read.ticker.dto.TickerDto;
@@ -120,15 +120,15 @@ public class OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL implements App {
             // TODO: new ReSeller(buyer, new Seller()).reSell();
             OrderResultDto sellResult = null;
             try {
-                sellResult = new SellOrder(USDT_ETH, sellPrice, sellEthAmount).execute();
+                sellResult = new PoloniexSellOrder(USDT_ETH, sellPrice, sellEthAmount).execute();
             } catch (ApiOrderException e) {
                 log.error("Failed to execute sell ETH order", e);
                 try {
-                    sellResult = new SellOrder(USDT_ETH, sellPrice, sellEthAmount).execute();
+                    sellResult = new PoloniexSellOrder(USDT_ETH, sellPrice, sellEthAmount).execute();
                 } catch (ApiOrderException ex) {
                     log.error("Failed to execute sell ETH order (2-nd try)", e);
                     try {
-                        sellResult = new SellOrder(USDT_ETH, sellPrice, sellEthAmount).execute();
+                        sellResult = new PoloniexSellOrder(USDT_ETH, sellPrice, sellEthAmount).execute();
                     } catch (ApiOrderException exc) {
                         log.error("Failed to execute sell ETH order (2-nd try)", e);
                         System.exit(500);

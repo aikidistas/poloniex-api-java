@@ -7,15 +7,15 @@ import com.google.gson.JsonObject;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-public class CancelOrderOrderImpl implements CancelOrder {
+public class PoloniexCancelOrder implements CancelOrder {
 
     private final Json jsonSource;
 
-    public CancelOrderOrderImpl(String orderNumber) {
-        this(new CancelAsJson(orderNumber));
+    public PoloniexCancelOrder(String orderNumber) {
+        this(new PoloniexCancelOrderAsJson(orderNumber));
     }
 
-    public CancelOrderOrderImpl(Json jsonSource) {
+    public PoloniexCancelOrder(Json jsonSource) {
         this.jsonSource = jsonSource;
     }
 

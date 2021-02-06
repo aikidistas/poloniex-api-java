@@ -1,4 +1,4 @@
-package api.rest.privateapi.trade.sell;
+package api.rest.privateapi.trade.buy;
 
 import api.rest.ApiException;
 import api.rest.Json;
@@ -10,15 +10,15 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-class SellAsJson implements Json {
-    private static final String COMMAND = "sell";
+class PoloniexBuyOrderResultAsJson implements Json {
+    private static final String COMMAND = "buy";
     private final Json result;
 
-    SellAsJson(String currencyPair, BigDecimal rate, BigDecimal amount) {
+    PoloniexBuyOrderResultAsJson(String currencyPair, BigDecimal rate, BigDecimal amount) {
         this(currencyPair, rate, amount, false, false, false);
     }
 
-    SellAsJson(String currencyPair, BigDecimal rate, BigDecimal amount, boolean fillOrKill, boolean immediateOrCancel, boolean postOnly) {
+    PoloniexBuyOrderResultAsJson(String currencyPair, BigDecimal rate, BigDecimal amount, boolean fillOrKill, boolean immediateOrCancel, boolean postOnly) {
         List<NameValuePair> additionalPostParams = new ArrayList<>();
         additionalPostParams.add(new BasicNameValuePair("currencyPair", currencyPair));
         additionalPostParams.add(new BasicNameValuePair("rate", rate.toPlainString()));

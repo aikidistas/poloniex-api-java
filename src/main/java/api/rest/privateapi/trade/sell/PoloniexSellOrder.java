@@ -1,4 +1,4 @@
-package api.rest.privateapi.trade.buy;
+package api.rest.privateapi.trade.sell;
 
 import api.rest.Json;
 import api.rest.privateapi.trade.ApiOrderException;
@@ -16,24 +16,24 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 
 @Log4j2
-public class PoloniexBuyOrder implements BuyOrder {
+public class PoloniexSellOrder implements SellOrder {
+
     private final static DateTimeFormatter DATE_TIME_FORMATTER =
             new DateTimeFormatterBuilder()
                     .appendPattern("yyyy-MM-dd HH:mm:ss")
                     .appendFraction(ChronoField.MICRO_OF_SECOND, 0, 6, true)
                     .toFormatter().withZone(ZoneOffset.UTC);
-
     private final Json jsonSource;
 
-    public PoloniexBuyOrder(String currencyPair, BigDecimal buyPrice, BigDecimal amount) {
-        this(new PoloniexBuyOrderResultAsJson(currencyPair, buyPrice, amount));
+    public PoloniexSellOrder(String currencyPair, BigDecimal sellPrice, BigDecimal amount) {
+        this(new PoloniexSellOrderAsJson(currencyPair, sellPrice, amount));
     }
 
-    public PoloniexBuyOrder(String currencyPair, BigDecimal buyPrice, BigDecimal amount, boolean fillOrKill, boolean immediateOrCancel, boolean postOnly) {
-        this(new PoloniexBuyOrderResultAsJson(currencyPair, buyPrice, amount, fillOrKill, immediateOrCancel, postOnly));
+    public PoloniexSellOrder(String currencyPair, BigDecimal sellPrice, BigDecimal amount, boolean fillOrKill, boolean immediateOrCancel, boolean postOnly) {
+        this(new PoloniexSellOrderAsJson(currencyPair, sellPrice, amount, fillOrKill, immediateOrCancel, postOnly));
     }
 
-    public PoloniexBuyOrder(Json jsonSource) {
+    public PoloniexSellOrder(Json jsonSource) {
         this.jsonSource = jsonSource;
     }
 
@@ -41,8 +41,11 @@ public class PoloniexBuyOrder implements BuyOrder {
     public OrderResultDto execute() throws ApiOrderException {
         try {
             return new GsonBuilder()
-                    .registerTypeAdapter(ZonedDateTime.class, (JsonDeserializer<ZonedDateTime>) (json, type, jsonDeserializationContext) -> ZonedDateTime.parse(json.getAsJsonPrimitive().getAsString(), DATE_TIME_FORMATTER))
-                    .create().fromJson(
+                    .registerTypeAdapter(
+                            ZonedDateTime.class,
+                            (JsonDeserializer<ZonedDateTime>) (json, type, jsonDeserializationContext) -> ZonedDateTime.parse(json.getAsJsonPrimitive().getAsString(), DATE_TIME_FORMATTER))
+                    .create()
+                    .fromJson(
                             jsonSource.json(),
                             new TypeToken<OrderResultDto>() {
                             }.getType()

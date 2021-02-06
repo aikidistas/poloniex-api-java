@@ -1,4 +1,4 @@
-package api.rest.privateapi.trade.buy;
+package api.rest.privateapi.trade.move;
 
 import api.rest.Json;
 import api.rest.privateapi.trade.ApiOrderException;
@@ -16,7 +16,8 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
 
 @Log4j2
-public class PoloniexBuyOrder implements BuyOrder {
+public class PoloniexMoveOrder implements MoveOrder {
+
     private final static DateTimeFormatter DATE_TIME_FORMATTER =
             new DateTimeFormatterBuilder()
                     .appendPattern("yyyy-MM-dd HH:mm:ss")
@@ -25,15 +26,11 @@ public class PoloniexBuyOrder implements BuyOrder {
 
     private final Json jsonSource;
 
-    public PoloniexBuyOrder(String currencyPair, BigDecimal buyPrice, BigDecimal amount) {
-        this(new PoloniexBuyOrderResultAsJson(currencyPair, buyPrice, amount));
+    public PoloniexMoveOrder(String orderNumber, BigDecimal rate) {
+        this(new PoloniexMoveOrderAsJson(orderNumber, rate));
     }
 
-    public PoloniexBuyOrder(String currencyPair, BigDecimal buyPrice, BigDecimal amount, boolean fillOrKill, boolean immediateOrCancel, boolean postOnly) {
-        this(new PoloniexBuyOrderResultAsJson(currencyPair, buyPrice, amount, fillOrKill, immediateOrCancel, postOnly));
-    }
-
-    public PoloniexBuyOrder(Json jsonSource) {
+    public PoloniexMoveOrder(Json jsonSource) {
         this.jsonSource = jsonSource;
     }
 
@@ -42,7 +39,8 @@ public class PoloniexBuyOrder implements BuyOrder {
         try {
             return new GsonBuilder()
                     .registerTypeAdapter(ZonedDateTime.class, (JsonDeserializer<ZonedDateTime>) (json, type, jsonDeserializationContext) -> ZonedDateTime.parse(json.getAsJsonPrimitive().getAsString(), DATE_TIME_FORMATTER))
-                    .create().fromJson(
+                    .create()
+                    .fromJson(
                             jsonSource.json(),
                             new TypeToken<OrderResultDto>() {
                             }.getType()

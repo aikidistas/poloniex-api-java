@@ -4,7 +4,7 @@ import api.rest.ApiReadException;
 import api.rest.privateapi.read.openorders.OpenOrders;
 import api.rest.privateapi.read.openorders.dto.OpenOrderDto;
 import api.rest.privateapi.trade.ApiOrderException;
-import api.rest.privateapi.trade.cancel.CancelOrderOrderImpl;
+import api.rest.privateapi.trade.cancel.PoloniexCancelOrder;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.List;
@@ -44,7 +44,7 @@ public class CancelAllBuyOrdersApp implements App {
                 .filter(o -> Objects.nonNull(o.orderNumber))
                 .forEach(o -> {
                     try {
-                        new CancelOrderOrderImpl(o.orderNumber).execute();
+                        new PoloniexCancelOrder(o.orderNumber).execute();
                         System.out.println(o);
                         TimeUnit.MILLISECONDS.sleep(200);
                     } catch (InterruptedException | ApiOrderException e) {

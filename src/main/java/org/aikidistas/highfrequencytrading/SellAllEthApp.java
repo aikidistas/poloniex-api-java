@@ -4,7 +4,7 @@ import api.rest.ApiReadException;
 import api.rest.privateapi.read.balances.Balances;
 import api.rest.privateapi.read.balances.BalancesData;
 import api.rest.privateapi.trade.ApiOrderException;
-import api.rest.privateapi.trade.sell.SellOrder;
+import api.rest.privateapi.trade.sell.PoloniexSellOrder;
 import api.rest.publicapi.read.ticker.Ticker;
 import api.rest.publicapi.read.ticker.dto.TickerDto;
 import lombok.extern.log4j.Log4j2;
@@ -29,7 +29,7 @@ public class SellAllEthApp implements App {
 
             final BigDecimal ethBalance = balances.eth();
             final TickerDto tickerDto = ticker.usdtEthTicker();
-            new SellOrder(
+            new PoloniexSellOrder(
                     "USDT_ETH",
                     new BigDecimal("0.00000001")
                             .add(tickerDto.highestBid).setScale(8, RoundingMode.CEILING),

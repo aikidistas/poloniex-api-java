@@ -5,7 +5,7 @@ import api.rest.privateapi.read.orderstatus.OrderStatus;
 import api.rest.privateapi.read.orderstatus.dto.OrderStatusDto;
 import api.rest.privateapi.trade.ApiOrderException;
 import api.rest.privateapi.trade.dto.OrderResultDto;
-import api.rest.privateapi.trade.sell.SellOrder;
+import api.rest.privateapi.trade.sell.PoloniexSellOrder;
 import lombok.extern.log4j.Log4j2;
 import org.aikidistas.highfrequencytrading.domain.buyer.Buyer;
 import org.aikidistas.highfrequencytrading.domain.buyer.PoloniexBuyer;
@@ -98,15 +98,15 @@ public class UsdtEthReSeller implements ReSeller {
 
         OrderResultDto sellResult = null;
         try {
-            sellResult = new SellOrder(USDT_ETH, sellPrice, sellEthAmount).execute();
+            sellResult = new PoloniexSellOrder(USDT_ETH, sellPrice, sellEthAmount).execute();
         } catch (ApiOrderException e) {
             log.error("Failed to execute sell ETH order", e);
             try {
-                sellResult = new SellOrder(USDT_ETH, sellPrice, sellEthAmount).execute();
+                sellResult = new PoloniexSellOrder(USDT_ETH, sellPrice, sellEthAmount).execute();
             } catch (ApiOrderException ex) {
                 log.error("Failed to execute sell ETH order (2-nd try)", e);
                 try {
-                    sellResult = new SellOrder(USDT_ETH, sellPrice, sellEthAmount).execute();
+                    sellResult = new PoloniexSellOrder(USDT_ETH, sellPrice, sellEthAmount).execute();
                 } catch (ApiOrderException exc) {
                     log.error("Failed to execute sell ETH order (2-nd try)", e);
                     System.exit(500);
