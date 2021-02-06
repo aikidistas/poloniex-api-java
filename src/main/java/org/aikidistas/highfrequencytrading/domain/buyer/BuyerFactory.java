@@ -1,9 +1,9 @@
 package org.aikidistas.highfrequencytrading.domain.buyer;
 
-import api.rest.privateapi.trade.buy.BuyOrder;
+import api.rest.privateapi.trade.trade.TradeOrder;
 
 import java.math.BigDecimal;
 
 public interface BuyerFactory {
-    BuyOrder buy(String currencyPair, BigDecimal price, BigDecimal amount);
+    TradeOrder buy(String currencyPair, BigDecimal price, BigDecimal amount);
 }

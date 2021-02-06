@@ -1,55 +1,31 @@
 package api.rest.privateapi.trade.buy;
 
-import api.rest.Json;
 import api.rest.privateapi.trade.ApiOrderException;
 import api.rest.privateapi.trade.dto.OrderResultDto;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.reflect.TypeToken;
-import lombok.extern.log4j.Log4j2;
+import api.rest.privateapi.trade.trade.PoloniexTradeOrder;
+import api.rest.privateapi.trade.trade.TradeCommand;
+import api.rest.privateapi.trade.trade.TradeOrder;
 
 import java.math.BigDecimal;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.time.temporal.ChronoField;
 
-@Log4j2
-public class PoloniexBuyOrder implements BuyOrder {
-    private final static DateTimeFormatter DATE_TIME_FORMATTER =
-            new DateTimeFormatterBuilder()
-                    .appendPattern("yyyy-MM-dd HH:mm:ss")
-                    .appendFraction(ChronoField.MICRO_OF_SECOND, 0, 6, true)
-                    .toFormatter().withZone(ZoneOffset.UTC);
+public class PoloniexBuyOrder implements TradeOrder {
 
-    private final Json jsonSource;
+    private final PoloniexTradeOrder tradeOrder;
 
-    public PoloniexBuyOrder(String currencyPair, BigDecimal buyPrice, BigDecimal amount) {
-        this(new PoloniexBuyOrderResultAsJson(currencyPair, buyPrice, amount));
+    public PoloniexBuyOrder(String currencyPair, BigDecimal price, BigDecimal amount) {
+        this(new PoloniexTradeOrder(TradeCommand.BUY, currencyPair, price, amount));
     }
 
-    public PoloniexBuyOrder(String currencyPair, BigDecimal buyPrice, BigDecimal amount, boolean fillOrKill, boolean immediateOrCancel, boolean postOnly) {
-        this(new PoloniexBuyOrderResultAsJson(currencyPair, buyPrice, amount, fillOrKill, immediateOrCancel, postOnly));
+    public PoloniexBuyOrder(String currencyPair, BigDecimal price, BigDecimal amount, boolean fillOrKill, boolean immediateOrCancel, boolean postOnly) {
+        this(new PoloniexTradeOrder(TradeCommand.BUY, currencyPair, price, amount, fillOrKill, immediateOrCancel, postOnly));
     }
 
-    public PoloniexBuyOrder(Json jsonSource) {
-        this.jsonSource = jsonSource;
+    public PoloniexBuyOrder(PoloniexTradeOrder tradeOrder) {
+        this.tradeOrder = tradeOrder;
     }
 
     @Override
     public OrderResultDto execute() throws ApiOrderException {
-        try {
-            return new GsonBuilder()
-                    .registerTypeAdapter(ZonedDateTime.class, (JsonDeserializer<ZonedDateTime>) (json, type, jsonDeserializationContext) -> ZonedDateTime.parse(json.getAsJsonPrimitive().getAsString(), DATE_TIME_FORMATTER))
-                    .create().fromJson(
-                            jsonSource.json(),
-                            new TypeToken<OrderResultDto>() {
-                            }.getType()
-                    );
-        } catch (Exception ex) {
-            log.error("Error executing trade Api - {}", ex.getMessage());
-            throw new ApiOrderException(ex);
-        }
+        return tradeOrder.execute();
     }
 }
