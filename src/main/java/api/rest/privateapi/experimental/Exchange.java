@@ -1,16 +1,17 @@
 package api.rest.privateapi.experimental;
 
 
+import java.math.BigDecimal;
 import java.util.List;
 
 interface Exchange {
-    TradeOrder buyOrder();
+    TradeOrder buyOrder(String currencyPair, BigDecimal price, BigDecimal amount);
 
     TradeOrder sellOrder();
 
-    List<TradeOrder> buyOrders();
+    List<PostedTradeOrder> postedBuyOrders();
 
-    List<TradeOrder> sellOrders();
+    List<PostedTradeOrder> postedSellOrders();
 
-    List<TradeOrder> tradeOrders();
+    List<PostedTradeOrder> postedTradeOrders();
 }

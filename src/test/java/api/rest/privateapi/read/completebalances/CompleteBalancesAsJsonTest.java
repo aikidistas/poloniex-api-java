@@ -1,7 +1,7 @@
 package api.rest.privateapi.read.completebalances;
 
 import lombok.SneakyThrows;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static api.rest.ApiResultPrintHelper.printAndWait;
 

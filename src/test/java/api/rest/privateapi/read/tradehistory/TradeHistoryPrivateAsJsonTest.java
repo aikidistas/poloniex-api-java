@@ -1,7 +1,7 @@
 package api.rest.privateapi.read.tradehistory;
 
 import lombok.SneakyThrows;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;

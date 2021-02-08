@@ -20,7 +20,7 @@ public class PoloniexCancelOrder implements CancelOrder {
     }
 
     @Override
-    public Boolean execute() throws ApiOrderException {
+    public boolean execute() throws ApiOrderException {
         try {
             return 1 == new Gson()
                     .fromJson(jsonSource.json(), JsonObject.class)

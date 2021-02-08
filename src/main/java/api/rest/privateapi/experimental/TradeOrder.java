@@ -10,6 +10,7 @@ interface TradeOrder {
 
     boolean posted();
 
+    PostedTradeOrder postedTradeOrder();
 
 
     enum Status { // private enum? should not be visible for interface users. So probably will be moved to interface implementation for internal usage of implementing class

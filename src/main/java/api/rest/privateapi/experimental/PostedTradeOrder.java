@@ -1,6 +1,6 @@
 package api.rest.privateapi.experimental;
 
-public interface PostedTradeOrder {
+interface PostedTradeOrder {
     void waitPartialTrades();    //
 
     void waitAllTrades();             // postSuccessfully() and try to wait Till execute make sure it is posted and wait till trades are executed     // final internal Status

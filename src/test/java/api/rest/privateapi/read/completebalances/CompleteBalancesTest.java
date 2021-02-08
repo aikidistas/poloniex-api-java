@@ -1,11 +1,73 @@
 package api.rest.privateapi.read.completebalances;
 
+import api.rest.ApiReadException;
 import lombok.SneakyThrows;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import static api.rest.ApiResultPrintHelper.printAndWait;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CompleteBalancesTest {
+
+
+    @SneakyThrows
+    @Test
+    public void mapCompleteBalanceResultForCurrencyReturnsCorrectBalanceResult() {
+        String currencyType = "BTC";
+        String completeBalanceResults = "{\n"
+                + "	\"YACC\" : {\n"
+                + "		\"available\" : \"0.00000000\",\n"
+                + "		\"onOrders\" : \"0.00000000\",\n"
+                + "		\"btcValue\" : \"0.00000000\"\n"
+                + "	},\n"
+                + "	\"YANG\" : {\n"
+                + "		\"available\" : \"0.00000000\",\n"
+                + "		\"onOrders\" : \"0.00000000\",\n"
+                + "		\"btcValue\" : \"0.00000000\"\n"
+                + "	},\n"
+                + "	\"YC\" : {\n"
+                + "		\"available\" : \"0.00000000\",\n"
+                + "		\"onOrders\" : \"0.00000000\",\n"
+                + "		\"btcValue\" : \"0.00000000\"\n"
+                + "	},\n"
+                + "	\"BTC\" : {\n"
+                + "		\"available\" : \"5.00000000\",\n"
+                + "		\"onOrders\" : \"1.00000000\",\n"
+                + "		\"btcValue\" : \"2.00000000\"\n"
+                + "	}\n"
+                + "}";
+        assertNotNull(new CompleteBalances.Smart(new CompleteBalances(() -> completeBalanceResults)).data(currencyType));
+    }
+
+    @Test
+    public void mapCompleteBalanceResultReturnsNullForInvalidCurrencyType() {
+        String currencyType = "BTC";
+        String completeBalanceResults = "{\n"
+                + "	\"YACC\" : {\n"
+                + "		\"available\" : \"0.00000000\",\n"
+                + "		\"onOrders\" : \"0.00000000\",\n"
+                + "		\"btcValue\" : \"0.00000000\"\n"
+                + "	},\n"
+                + "	\"YANG\" : {\n"
+                + "		\"available\" : \"0.00000000\",\n"
+                + "		\"onOrders\" : \"0.00000000\",\n"
+                + "		\"btcValue\" : \"0.00000000\"\n"
+                + "	},\n"
+                + "	\"YC\" : {\n"
+                + "		\"available\" : \"0.00000000\",\n"
+                + "		\"onOrders\" : \"0.00000000\",\n"
+                + "		\"btcValue\" : \"0.00000000\"\n"
+                + "	},\n"
+                + "	\"YIN\" : {\n"
+                + "		\"available\" : \"0.00000000\",\n"
+                + "		\"onOrders\" : \"0.00000000\",\n"
+                + "		\"btcValue\" : \"0.00000000\"\n"
+                + "	}\n"
+                + "}";
+        final CompleteBalances.Smart completeBalances = new CompleteBalances.Smart(new CompleteBalances(() -> completeBalanceResults));
+        Assertions.assertThrows(ApiReadException.class, () -> completeBalances.data(currencyType));
+    }
 
     @SneakyThrows
     @Test
@@ -19,7 +81,7 @@ public class CompleteBalancesTest {
     @Test
     public void completeBalancesForOneCurrency() {
         printAndWait(
-                new CompleteBalancesData.Smart(new CompleteBalances()).data("USDT").toString()
+                new CompleteBalancesData.Smart(new CompleteBalances()).data("USDT")
         );
     }
 
@@ -27,7 +89,7 @@ public class CompleteBalancesTest {
     @Test
     public void completeBalancesForUsdt() {
         printAndWait(
-                new CompleteBalancesData.Smart(new CompleteBalances()).usdt().toString()
+                new CompleteBalances.Smart(new CompleteBalances()).usdt()
         );
     }
 
@@ -35,7 +97,7 @@ public class CompleteBalancesTest {
     @Test
     public void completeBalancesForEth() {
         printAndWait(
-                new CompleteBalancesData.Smart(new CompleteBalances()).eth().toString()
+                new CompleteBalances.Smart(new CompleteBalances()).eth()
         );
     }
 
@@ -43,9 +105,7 @@ public class CompleteBalancesTest {
     @Test
     public void completeBalancesPositiveOnly() {
         printAndWait(
-                new CompleteBalancesData.Smart(new CompleteBalances()).positiveBalances().toString()
+                new CompleteBalances.Smart(new CompleteBalances()).positiveBalances()
         );
     }
-
-
 }
