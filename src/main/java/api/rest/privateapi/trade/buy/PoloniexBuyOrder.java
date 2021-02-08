@@ -5,6 +5,7 @@ import api.rest.privateapi.trade.dto.OrderResultDto;
 import api.rest.privateapi.trade.trade.PoloniexTradeOrder;
 import api.rest.privateapi.trade.trade.TradeCommand;
 import api.rest.privateapi.trade.trade.TradeOrder;
+import com.jcabi.aspects.RetryOnFailure;
 
 import java.math.BigDecimal;
 
@@ -24,6 +25,7 @@ public class PoloniexBuyOrder implements TradeOrder {
         this.tradeOrder = tradeOrder;
     }
 
+    @RetryOnFailure
     @Override
     public OrderResultDto execute() throws ApiOrderException {
         return tradeOrder.execute();

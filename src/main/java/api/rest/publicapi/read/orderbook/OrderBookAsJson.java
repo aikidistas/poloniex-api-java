@@ -3,6 +3,7 @@ package api.rest.publicapi.read.orderbook;
 import api.rest.ApiException;
 import api.rest.Json;
 import api.rest.publicapi.PublicApiCommandResultAsJson;
+import com.jcabi.aspects.RetryOnFailure;
 
 class OrderBookAsJson implements Json {
     private static final int DEFAULT_DEPTH = 50;
@@ -22,6 +23,7 @@ class OrderBookAsJson implements Json {
         result = json;
     }
 
+    @RetryOnFailure
     @Override
     public String json() throws ApiException {
         return result.json();
