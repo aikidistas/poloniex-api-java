@@ -99,8 +99,9 @@ public class PrivateApiResultAsJson implements Json {
 
             return client.postHttp(TRADING_URL, postParams, httpHeaders);
         } catch (IOException | NoSuchAlgorithmException | InvalidKeyException ex) {
-            log.error("Call to Poloniex Private API resulted in exception - " + ex.getMessage(), ex);
-            throw new ApiException(ex);
+            final String message = "Call to Poloniex Private API resulted in exception - " + ex.getMessage();
+            log.error(message, ex);
+            throw new ApiException(message, ex);
         }
     }
 }

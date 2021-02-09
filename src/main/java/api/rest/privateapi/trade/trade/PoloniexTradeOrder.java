@@ -47,9 +47,10 @@ public class PoloniexTradeOrder implements TradeOrder {
                             new TypeToken<OrderResultDto>() {
                             }.getType()
                     );
-        } catch (Exception ex) {
-            log.error("Error executing trade Api - {}", ex.getMessage());
-            throw new ApiOrderException(ex);
+        } catch (Exception e) {
+            final String message = "Error executing trade Api - {}";
+            log.error(message, e.getMessage());
+            throw new ApiOrderException(message, e);
         }
     }
 }

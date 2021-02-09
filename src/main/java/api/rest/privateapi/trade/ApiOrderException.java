@@ -8,7 +8,7 @@ public class ApiOrderException extends ApiException {
         super(e);
     }
 
-    public ApiOrderException(Exception e) {
-        super(e);
+    public ApiOrderException(String msg, Exception e) {
+        super(msg, e);
     }
 }

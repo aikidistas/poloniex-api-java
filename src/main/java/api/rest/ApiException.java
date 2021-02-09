@@ -5,7 +5,8 @@ public class ApiException extends Exception {
         super(e);
     }
 
-    public ApiException(Exception e) {
-        super(e);
+    public ApiException(String msg, Exception e) {
+        super(msg, e);
+
     }
 }

@@ -26,9 +26,10 @@ public class PoloniexCancelOrder implements CancelOrder {
                     .fromJson(jsonSource.json(), JsonObject.class)
                     .get("success")
                     .getAsInt();
-        } catch (Exception ex) {
-            log.error("Error executing cancel order - {}", ex.getMessage());
-            throw new ApiOrderException(ex);
+        } catch (Exception e) {
+            final String message = "Error executing cancel order - {}";
+            log.error(message, e.getMessage());
+            throw new ApiOrderException(message, e);
         }
     }
 }

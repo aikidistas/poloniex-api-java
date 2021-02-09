@@ -41,9 +41,10 @@ public class OrderStatus implements OrderStatusData {
                 return new OrderStatusDto(0, error.result.get("error"), null);
             }
 
-        } catch (Exception ex) {
-            log.error("Error retrieving data from Api - {}", ex.getMessage());
-            throw new ApiReadException(ex);
+        } catch (Exception e) {
+            final String message = "Error retrieving data from Api - {}";
+            log.error(message, e.getMessage());
+            throw new ApiReadException(message, e);
         }
     }
 

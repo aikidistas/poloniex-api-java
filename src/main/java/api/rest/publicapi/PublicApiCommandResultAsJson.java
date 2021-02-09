@@ -29,9 +29,10 @@ public final class PublicApiCommandResultAsJson implements Json {
         try {
             String url = PUBLIC_URL + command;
             return httpClient.getHttp(url, null);
-        } catch (IOException ex) {
-            log.warn("Call to '" + command + "' API resulted in exception: - " + ex.getMessage(), ex);
-            throw new ApiReadException(ex);
+        } catch (IOException e) {
+            final String message = "Call to '" + command + "' API resulted in exception: - " + e.getMessage();
+            log.error(message, e);
+            throw new ApiReadException(message, e);
         }
     }
 }

@@ -69,14 +69,16 @@ public class ChartData implements ChartDataResult {
                         .registerTypeAdapter(ChartDataDto.class, new ChartDataDtoDeserializer())
                         .create().fromJson(chartDataResult, ChartDataDto[].class);
                 return Arrays.asList(chartDataResults);
-            } catch (JsonSyntaxException | DateTimeParseException ex) {
-                log.error("Exception mapping chart data {} - {}", chartDataResult, ex.getMessage());
-                throw new ApiReadException(ex);
+            } catch (JsonSyntaxException | DateTimeParseException e) {
+                final String message = "Exception mapping chart data {} - {}";
+                log.error(message, chartDataResult, e.getMessage());
+                throw new ApiReadException(message, e);
             }
 
-        } catch (Exception ex) {
-            log.error("Error retrieving chartData - {}", ex.getMessage());
-            throw new ApiReadException(ex);
+        } catch (Exception e) {
+            final String message = "Error retrieving chartData - {}";
+            log.error(message, e.getMessage());
+            throw new ApiReadException(message, e);
         }
     }
 }

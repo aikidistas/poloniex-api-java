@@ -44,9 +44,10 @@ public class OrderTrades implements OrderTradesData {
                             new TypeToken<List<OrderTradeDto>>() {
                             }.getType()
                     );
-        } catch (Exception ex) {
-            log.error("Error retrieving data from Api - {}", ex.getMessage());
-            throw new ApiReadException(ex);
+        } catch (Exception e) {
+            final String message = "Error retrieving data from Api - {}";
+            log.error(message, e.getMessage());
+            throw new ApiReadException(message, e);
         }
     }
 }

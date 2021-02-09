@@ -27,9 +27,10 @@ public class Ticker implements TickerData {
         try {
             return new Gson().fromJson(jsonSource.json(), new TypeToken<Map<String, TickerDto>>() {
             }.getType());
-        } catch (Exception ex) {
-            log.error("Error retrieving ticker - {}", ex.getMessage());
-            throw new ApiReadException(ex);
+        } catch (Exception e) {
+            final String message = "Error retrieving ticker - {}";
+            log.error(message, e.getMessage());
+            throw new ApiReadException(message, e);
         }
     }
 }

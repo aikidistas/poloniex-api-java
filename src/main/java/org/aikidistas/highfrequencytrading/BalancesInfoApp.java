@@ -7,27 +7,32 @@ import api.rest.privateapi.read.completebalances.dto.CompleteBalanceDto;
 import lombok.extern.log4j.Log4j2;
 import org.aikidistas.utils.Sleep;
 
-import java.util.Map;
-
 @Log4j2
 public class BalancesInfoApp {
     public static void main(String... args) {
+        try {
+            continuouslyPrintPositiveBalances();
+        } catch (ApiReadException e) {
+            log.error("Failed to get data from api.", e);
+        }
+
+    }
+
+    public static void continuouslyPrintPositiveBalances() throws ApiReadException {
         while (true) {
-            Map<String, CompleteBalanceDto> balances;
-            try {
-                balances = new CompleteBalancesData.Smart(new CompleteBalances()).positiveBalances();
-            } catch (ApiReadException e) {
-                continue;
-            }
-            if (balances != null) {
-                System.out.println("================================================================================================================================");
-                balances.forEach((k, v) -> {
+            printPositiveBalances();
+        }
+    }
+
+    public static void printPositiveBalances() throws ApiReadException {
+        System.out.println("================================================================================================================================");
+        new CompleteBalancesData.Smart(new CompleteBalances())
+                .positiveBalances()
+                .forEach((String k, CompleteBalanceDto v) -> {
                     if (v != null) {
                         System.out.println(k + v.toString());
                     }
                 });
-                Sleep.seconds(10);
-            }
-        }
+        Sleep.seconds(3);
     }
 }
