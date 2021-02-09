@@ -13,11 +13,11 @@ import lombok.extern.log4j.Log4j2;
 import org.aikidistas.highfrequencytrading.domain.buyer.Buyer;
 import org.aikidistas.highfrequencytrading.domain.buyer.PoloniexBuyer;
 import org.aikidistas.highfrequencytrading.domain.buyer.WaitingBuyer;
+import org.aikidistas.utils.Sleep;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -100,11 +100,8 @@ public class OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL implements App {
                 } catch (ApiReadException e) {
                     continue;
                 }
-                try {
-                    TimeUnit.MILLISECONDS.sleep(1000);
-                } catch (InterruptedException e) {
-                    // continue;
-                }
+                Sleep.seconds(1);
+
             }
 
             // TODO: new ReSeller(buyer, new Seller()).getMinimumProfitableReSellPrice           // buyer.getLastBuyPrice()
@@ -153,11 +150,7 @@ public class OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL implements App {
                     break;
                 }
                 ////            log.info(sellOrderStatus);
-                try {
-                    TimeUnit.MILLISECONDS.sleep(1000); // TODO: handle SIGINT. exit from main. see if it was while buy, or while sell. if it was buy order, maybe cancel order, and retry to {buy and sell}
-                } catch (InterruptedException e) {
-                    // continue;
-                }
+                Sleep.seconds(1); // TODO: handle SIGINT. exit from main. see if it was while buy, or while sell. if it was buy order, maybe cancel order, and retry to {buy and sell}
             }
         }
     }

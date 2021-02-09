@@ -2,12 +2,12 @@ package api.rest.publicapi.read.ticker;
 
 import api.rest.publicapi.read.ticker.dto.TickerDto;
 import lombok.SneakyThrows;
+import org.aikidistas.utils.Sleep;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 class TickerTest {
 
@@ -16,7 +16,7 @@ class TickerTest {
     public void returnUsdtEthTicker() {
         TickerDto usdtEth = new Ticker.Smart(new Ticker()).data("USDT_ETH");
         System.out.println("USDT_ETH. \t\tBid: " + usdtEth.highestBid + ". \tAsk: " + usdtEth.lowestAsk);
-        TimeUnit.SECONDS.sleep(1);
+        Sleep.seconds(1);
     }
 
     @SneakyThrows
@@ -27,7 +27,7 @@ class TickerTest {
             System.out.println(ticker.getKey() + ". Bid: " + formatBigDecimal(ticker.getValue().highestBid) + ". Ask: " + formatBigDecimal(ticker.getValue().lowestAsk));
         }
 
-        TimeUnit.SECONDS.sleep(1);
+        Sleep.seconds(1);
     }
 
     private String formatBigDecimal(BigDecimal number) {

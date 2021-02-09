@@ -6,10 +6,10 @@ import api.rest.privateapi.read.openorders.dto.OpenOrderDto;
 import api.rest.privateapi.trade.ApiOrderException;
 import api.rest.privateapi.trade.cancel.PoloniexCancelOrder;
 import lombok.extern.log4j.Log4j2;
+import org.aikidistas.utils.Sleep;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 @Log4j2
 public class CancelAllBuyOrdersApp implements App {
@@ -45,11 +45,12 @@ public class CancelAllBuyOrdersApp implements App {
                 .forEach(o -> {
                     try {
                         new PoloniexCancelOrder(o.orderNumber).execute();
-                        System.out.println(o);
-                        TimeUnit.MILLISECONDS.sleep(200);
-                    } catch (InterruptedException | ApiOrderException e) {
-                        e.printStackTrace();
+                    } catch (ApiOrderException e) {
+                        log.error("Couldn't cancel order with order number: " + o.orderNumber, e);
                     }
+                    System.out.println(o);
+                    Sleep.milliseconds(200);
+
                 });
     }
 }

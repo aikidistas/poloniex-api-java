@@ -4,12 +4,12 @@ import api.rest.ApiReadException;
 import api.rest.publicapi.read.chartdata.dto.ChartDataDto;
 import api.rest.publicapi.read.chartdata.enums.ChartDataPeriod;
 import lombok.SneakyThrows;
+import org.aikidistas.utils.Sleep;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static api.rest.ApiResultPrintHelper.printAndWait;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -73,7 +73,7 @@ public class ChartDataTest {
         List<ChartDataDto> chartDataList = new ChartData("USDT_ETH", ChartDataPeriod.HOURS_24, ZonedDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC).toEpochSecond(), ZonedDateTime.of(2020, 1, 5, 0, 0, 0, 0, ZoneOffset.UTC).toEpochSecond()).chartData();
 
         chartDataList.forEach((ChartDataDto chart) -> System.out.println(chart.toString()));
-        TimeUnit.SECONDS.sleep(1);
+        Sleep.seconds(1);
     }
 
 }

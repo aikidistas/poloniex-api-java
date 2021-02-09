@@ -6,10 +6,10 @@ import api.rest.privateapi.read.orderstatus.dto.OrderStatusDto;
 import api.rest.privateapi.trade.ApiOrderException;
 import api.rest.privateapi.trade.dto.OrderResultDto;
 import lombok.extern.log4j.Log4j2;
+import org.aikidistas.utils.Sleep;
 
 import java.math.BigDecimal;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 @Log4j2
 public class WaitingBuyer implements Buyer {
@@ -49,19 +49,8 @@ public class WaitingBuyer implements Buyer {
                 continue;
             }
 //            log.info(orderStatus);
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                try {
-                    TimeUnit.SECONDS.sleep(1);
-                } catch (InterruptedException ex) {
-                    try {
-                        TimeUnit.SECONDS.sleep(1);
-                    } catch (InterruptedException exc) {
-                        exc.printStackTrace();
-                    }
-                }
-            }
+            Sleep.seconds(1);
+
         }
         return buyResult;
     }

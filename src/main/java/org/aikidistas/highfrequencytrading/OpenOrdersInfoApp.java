@@ -4,9 +4,9 @@ import api.rest.ApiReadException;
 import api.rest.privateapi.read.openorders.OpenOrders;
 import api.rest.privateapi.read.openorders.dto.OpenOrderDto;
 import lombok.extern.log4j.Log4j2;
+import org.aikidistas.utils.Sleep;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Log4j2
 public class OpenOrdersInfoApp {
@@ -22,7 +22,7 @@ public class OpenOrdersInfoApp {
             }
             System.out.println("================================================================================================================================");
             orders.forEach(System.out::println);
-            TimeUnit.SECONDS.sleep(10);
+            Sleep.seconds(10);
         }
     }
 }

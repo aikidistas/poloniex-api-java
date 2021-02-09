@@ -8,10 +8,10 @@ import api.rest.publicapi.read.ticker.dto.TickerDto;
 import lombok.extern.log4j.Log4j2;
 import org.aikidistas.highfrequencytrading.domain.buyer.Buyer;
 import org.aikidistas.highfrequencytrading.domain.buyer.PoloniexBuyer;
+import org.aikidistas.utils.Sleep;
 
 import java.math.BigDecimal;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
 /**
@@ -68,11 +68,9 @@ public class BuyAndSellAllPricesApp_BROKEN implements App {
 
                     try {
                         buyer.buyMinimumEthAmountOrder(price);
-                        TimeUnit.MILLISECONDS.sleep(100);
+                        Sleep.milliseconds(100);
                     } catch (ApiOrderException e) {
                         log.error(e);
-                    } catch (InterruptedException e) {
-                        // ignore
                     }
                 });
         // todo: initially execute buy orders for each 1 usdt change from 300 to 2000 usdt (if enough usdt)

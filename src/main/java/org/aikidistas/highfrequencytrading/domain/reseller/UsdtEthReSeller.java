@@ -9,11 +9,11 @@ import api.rest.privateapi.trade.sell.PoloniexSellOrder;
 import lombok.extern.log4j.Log4j2;
 import org.aikidistas.highfrequencytrading.domain.buyer.Buyer;
 import org.aikidistas.highfrequencytrading.domain.buyer.PoloniexBuyer;
+import org.aikidistas.utils.Sleep;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 @Log4j2
 public class UsdtEthReSeller implements ReSeller {
@@ -72,19 +72,8 @@ public class UsdtEthReSeller implements ReSeller {
                 continue;
             }
 //            log.info(orderStatus);
-            try {
-                TimeUnit.MILLISECONDS.sleep(1000);
-            } catch (InterruptedException e) {
-                try {
-                    TimeUnit.MILLISECONDS.sleep(1000);
-                } catch (InterruptedException ex) {
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(1000);
-                    } catch (InterruptedException exc) {
-                        exc.printStackTrace();
-                    }
-                }
-            }
+            Sleep.milliseconds(1000);
+
         }
 /*
         // TODO: new ReSeller(buyer, new Seller()).getMinimumProfitableReSellPrice           // buyer.getLastBuyPrice()
@@ -133,19 +122,8 @@ public class UsdtEthReSeller implements ReSeller {
                 continue;
             }
             ////            log.info(sellOrderStatus);
-            try {
-                TimeUnit.MILLISECONDS.sleep(1000);
-            } catch (InterruptedException e) {
-                try {
-                    TimeUnit.MILLISECONDS.sleep(1000);
-                } catch (InterruptedException ex) {
-                    try {
-                        TimeUnit.MILLISECONDS.sleep(1000);
-                    } catch (InterruptedException exc) {
-                        exc.printStackTrace();
-                    }
-                }
-            }
+            Sleep.seconds(1);
+
         }
     }
 }
