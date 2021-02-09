@@ -15,7 +15,6 @@ public class BalancesInfoApp {
         } catch (ApiReadException e) {
             log.error("Failed to get data from api.", e);
         }
-
     }
 
     public static void continuouslyPrintPositiveBalances() throws ApiReadException {
