@@ -1,4 +1,4 @@
 package api.rest.privateapi.experimental;
 
-class ExecutedTradesDto {
+class ExecutedTradesExperimentalDto {
 }

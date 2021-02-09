@@ -1,6 +1,10 @@
 package api.rest.privateapi.experimental;
 
-public class PoloniexTradeOrder implements TradeOrder {
+import api.rest.privateapi.trade.dto.OrderResultDto;
+
+import java.util.ArrayList;
+
+public class PoloniexTradeOrderExperimental implements TradeOrderExperimental {
     private boolean posted = false;
 
     @Override
@@ -24,10 +28,10 @@ public class PoloniexTradeOrder implements TradeOrder {
     }
 
     @Override
-    public PostedTradeOrder postedTradeOrder() {
+    public PostedTradeOrderExperimental postedTradeOrder() {
         if (!this.posted) {
             throw new IllegalStateException("postedTradeOrder only can be called after trade order is posted");
         }
-        return new PoloniexPostedTradeOrder();
+        return new PoloniexPostedTradeOrderExperimental(new OrderResultDto(1L, new ArrayList<>(), "")); // TODO: implement this
     }
 }

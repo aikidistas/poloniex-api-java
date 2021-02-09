@@ -1,6 +1,6 @@
 package api.rest.privateapi.experimental;
 
-interface CancelOrder {
+interface CancelOrderExperimental {
     void execute();
 
     void executeSuccessfully(); // Cancelled also when order number not found.

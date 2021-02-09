@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 
 public class PoloniexBuyOrder implements TradeOrder {
 
-    private final PoloniexTradeOrder tradeOrder;
+    private final TradeOrder tradeOrder;
 
     public PoloniexBuyOrder(String currencyPair, BigDecimal price, BigDecimal amount) {
         this(new PoloniexTradeOrder(TradeCommand.BUY, currencyPair, price, amount));
@@ -20,7 +20,7 @@ public class PoloniexBuyOrder implements TradeOrder {
         this(new PoloniexTradeOrder(TradeCommand.BUY, currencyPair, price, amount, fillOrKill, immediateOrCancel, postOnly));
     }
 
-    public PoloniexBuyOrder(PoloniexTradeOrder tradeOrder) {
+    public PoloniexBuyOrder(TradeOrder tradeOrder) {
         this.tradeOrder = tradeOrder;
     }
 
