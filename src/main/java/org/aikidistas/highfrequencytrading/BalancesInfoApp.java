@@ -12,7 +12,6 @@ import java.util.concurrent.TimeUnit;
 @Log4j2
 public class BalancesInfoApp {
     public static void main(String... args) {
-        final String usdtEth = "USDT_ETH";
         while (true) {
             try {
 
