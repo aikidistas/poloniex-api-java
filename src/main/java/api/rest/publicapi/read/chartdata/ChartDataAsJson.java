@@ -4,7 +4,6 @@ import api.rest.ApiException;
 import api.rest.Json;
 import api.rest.publicapi.PublicApiCommandResultAsJson;
 import api.rest.publicapi.read.chartdata.enums.ChartDataPeriod;
-import com.jcabi.aspects.RetryOnFailure;
 
 class ChartDataAsJson implements Json {
     private final Json result;
@@ -20,7 +19,6 @@ class ChartDataAsJson implements Json {
         result = json;
     }
 
-    @RetryOnFailure
     @Override
     public String json() throws ApiException {
         return result.json();

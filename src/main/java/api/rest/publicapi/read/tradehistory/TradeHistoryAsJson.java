@@ -3,7 +3,6 @@ package api.rest.publicapi.read.tradehistory;
 import api.rest.ApiException;
 import api.rest.Json;
 import api.rest.publicapi.PublicApiCommandResultAsJson;
-import com.jcabi.aspects.RetryOnFailure;
 
 import java.time.ZonedDateTime;
 
@@ -27,7 +26,6 @@ class TradeHistoryAsJson implements Json {
         result = json;
     }
 
-    @RetryOnFailure
     @Override
     public String json() throws ApiException {
         return result.json();

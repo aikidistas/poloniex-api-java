@@ -3,7 +3,6 @@ package api.rest.privateapi.read.tradehistory;
 import api.rest.ApiException;
 import api.rest.Json;
 import api.rest.privateapi.PrivateApiResultAsJson;
-import com.jcabi.aspects.RetryOnFailure;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -38,7 +37,6 @@ class TradeHistoryPrivateAsJson implements Json {
         result = new PrivateApiResultAsJson(COMMAND, additionalPostParams);
     }
 
-    @RetryOnFailure
     @Override
     public String json() throws ApiException {
         return result.json();
