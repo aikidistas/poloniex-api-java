@@ -12,6 +12,9 @@ import java.util.Objects;
 
 @Log4j2
 public class CancelAllBuyOrdersApp implements App {
+
+    public static final String USDT_ETH = "USDT_ETH";
+
     public static void main(String... args) {
         App app = new CancelAllBuyOrdersApp();
         app.run();
@@ -19,15 +22,15 @@ public class CancelAllBuyOrdersApp implements App {
 
     @Override
     public void run() {
-        final String usdtEth = "USDT_ETH";
-
-        List<OpenOrderDto> orders; // TODO: {"orderNumber":"681683435348","type":"sell","rate":1354.98760672,"amount":0.00074097,"total":1.00400516}            2021-01-30 11:39:59,369 [main] ERROR PoloniexPrivateObjectApi - Error retrieving open orders for USDT_ETH - java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path $
         try {
-            orders = new OpenOrders(usdtEth).data();
+            cancelAllBuyOrders();
         } catch (Exception e) {
-            log.error(e);
-            return;
+            log.error("Couldn't cancel all buy orders", e);
         }
+    }
+
+    private void cancelAllBuyOrders() throws Exception {
+        List<OpenOrderDto> orders = new OpenOrders(USDT_ETH).data();
 
         System.out.println("================================================================================================================================");
         System.out.println("==  FOUND ORDERS ===============================================================================================================");
@@ -44,12 +47,11 @@ public class CancelAllBuyOrdersApp implements App {
                 .forEach(o -> {
                     try {
                         new PoloniexCancelOrder(o.orderNumber).execute();
+                        System.out.println(o);
+                        Sleep.milliseconds(200);
                     } catch (Exception e) {
-                        log.error("Couldn't cancel order with order number: " + o.orderNumber, e);
+                        log.warn("Couldn't cancel order nr: " + o.orderNumber + ". ", e);
                     }
-                    System.out.println(o);
-                    Sleep.milliseconds(200);
-
                 });
     }
 }
