@@ -27,7 +27,7 @@ public class DailyEthChartDataApp implements App {
     private void printTodayEthChart() throws Exception {
         long yesterdayEpochSecond = ZonedDateTime.now(ZoneOffset.UTC).minusDays(1).toEpochSecond();
         long now = ZonedDateTime.now(ZoneOffset.UTC).toEpochSecond();
-        List<ChartDataDto> btcDailyChartData = new ChartData("USDT_ETH", ChartDataPeriod.HOURS_24, yesterdayEpochSecond, now).chartData();
+        List<ChartDataDto> btcDailyChartData = new ChartData("USDT_ETH", ChartDataPeriod.HOURS_2, yesterdayEpochSecond, now).chartData();
         System.out.println("==========================================================");
         btcDailyChartData
                 .forEach(System.out::println);
