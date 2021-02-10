@@ -61,22 +61,26 @@ public class OneCentProfitTraderApp implements App {
         //======================================
         // BUY               and wait for completed trades
         waitingBuyer.buyMinimumEthAmountOrder(buyPrice);
+        System.out.println("==============================");
+        System.out.println("BUY [" + waitingBuyer.minimumEthAmount(buyPrice) + "] eth for price: " + buyPrice);
 
 
         BigDecimal buyEthAmount = waitingBuyer.minimumEthAmount(buyPrice);
 
         //===================================================
         // SELL
-        waitingSeller.sellEthOrder(
-                new Multiplication(
-                        buyPrice,
-                        new BigDecimal("1.004")
-                ),
-                new Multiplication(
-                        buyEthAmount,
-                        new BigDecimal("0.99875")
-                )
-        );
+        final BigDecimal sellPrice = new Multiplication(
+                buyPrice,
+                new BigDecimal("1.004")
+        ).value();
+        final BigDecimal sellAmount = new Multiplication(
+                buyEthAmount,
+                new BigDecimal("0.99875")
+        ).value();
+        waitingSeller.sellEthOrder(sellPrice, sellAmount);
+
+        System.out.println("==============================");
+        System.out.println("SELL [ " + sellAmount + " ] eth for price: " + sellPrice);
     }
 }
 
