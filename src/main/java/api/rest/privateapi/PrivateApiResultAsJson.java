@@ -9,12 +9,14 @@ import org.aikidistas.configuration.PoloniexApiConfiguration;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.cactoos.scalar.Retry;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,9 @@ public class PrivateApiResultAsJson implements Json {
     private final String apiKey;
     private final String apiSecret;
     private final HTTPClient client;
+
+    public static final int RETRY_ATTEMPTS = 5;
+    public static final int RETRY_WAIT_MILLIS = 200;
 
     private final String command;
     private final List<NameValuePair> additionalPostParams;
@@ -69,6 +74,20 @@ public class PrivateApiResultAsJson implements Json {
 
     @Override
     public String json() throws ApiException {
+        try {
+            return new Retry<>(
+                    this::resultAsJsonText,
+                    RETRY_ATTEMPTS,
+                    Duration.ofMillis(RETRY_WAIT_MILLIS)
+            ).value();
+        } catch (Exception e) {
+            final String message = "failed to receive result json from private api call after multiple retries.";
+            log.error(message, e);
+            throw new ApiException(message, e);
+        }
+    }
+
+    private String resultAsJsonText() throws ApiException {
         String nonceValue = String.valueOf(System.currentTimeMillis());
 
         try {
@@ -98,10 +117,10 @@ public class PrivateApiResultAsJson implements Json {
             httpHeaders.add(new BasicNameValuePair("Sign", signature));
 
             return client.postHttp(TRADING_URL, postParams, httpHeaders);
-        } catch (IOException | NoSuchAlgorithmException | InvalidKeyException ex) {
-            final String message = "Call to Poloniex Private API resulted in exception - " + ex.getMessage();
-            log.error(message, ex);
-            throw new ApiException(message, ex);
+        } catch (IOException | NoSuchAlgorithmException | InvalidKeyException e) {
+            final String message = "Call to Poloniex Private API resulted in exception - " + e.getMessage();
+            log.warn(message, e);
+            throw new ApiException(message, e);
         }
     }
 }
