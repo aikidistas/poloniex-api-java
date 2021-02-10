@@ -1,30 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN" monitorInterval="900">
     <Appenders>
-        <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss,SSS} [%t] %p %c{1} - %m%n"/>
-        </Console>
-        <File name="MyFile" fileName="logs/app.log">
+        <RollingFile
+                name="rollingFile"
+                fileName="logs/app.log"
+                filePattern="logs/app.%d{yyyy-MM-dd HH-mm-ss}.log"
+                ignoreExceptions="false"
+                immediateFlush="false">
             <PatternLayout>
                 <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
             </PatternLayout>
-        </File>
-        <Async name="Async">
-            <AppenderRef ref="MyFile"/>
+            <Policies>
+                <OnStartupTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="5"/>
+        </RollingFile>
+        <Async name="AsyncError">
+            <AppenderRef ref="rollingFile"/>
         </Async>
     </Appenders>
     <Loggers>
-        <Logger name="api" level="trace" additivity="true">
-            <AppenderRef ref="MyFile"/>
-        </Logger>
-        <Logger name="org.aikidistas" level="trace" additivity="true">
-            <AppenderRef ref="MyFile"/>
-        </Logger>
-        <Logger name="org.apache" level="info" additivity="true">
-            <AppenderRef ref="MyFile"/>
-        </Logger>
-        <Root level="error">
-            <AppenderRef ref="Async"/>
+        <Root level="trace">
+            <AppenderRef ref="AsyncError"/>
         </Root>
     </Loggers>
 </Configuration>
