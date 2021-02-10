@@ -1,6 +1,5 @@
 package api.rest.privateapi.read.balances;
 
-import api.rest.ApiReadException;
 import api.rest.Json;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,7 +22,7 @@ public class Balances implements BalancesData {
     }
 
     @Override
-    public Map<String, BigDecimal> data() throws ApiReadException {
+    public Map<String, BigDecimal> data() throws Exception {
         try {
             return new Gson().fromJson(
                     jsonSource.json(),
@@ -33,7 +32,7 @@ public class Balances implements BalancesData {
         } catch (Exception e) {
             final String message = "Error retrieving data from Api - {}";
             log.error(message, e.getMessage());
-            throw new ApiReadException(message, e);
+            throw new Exception(message, e);
         }
     }
 }

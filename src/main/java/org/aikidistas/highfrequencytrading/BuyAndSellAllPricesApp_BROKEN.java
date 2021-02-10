@@ -1,7 +1,5 @@
 package org.aikidistas.highfrequencytrading;
 
-import api.rest.ApiReadException;
-import api.rest.privateapi.trade.ApiOrderException;
 import api.rest.publicapi.read.ticker.Ticker;
 import api.rest.publicapi.read.ticker.TickerData;
 import api.rest.publicapi.read.ticker.dto.TickerDto;
@@ -44,7 +42,7 @@ public class BuyAndSellAllPricesApp_BROKEN implements App {
             TickerDto ticker;
             try {
                 ticker = new TickerData.Smart(new Ticker()).data(USDT_ETH);
-            } catch (ApiReadException e) {
+            } catch (Exception e) {
                 continue;
             }
             if (Objects.isNull(ticker) || Objects.isNull(ticker.last)) {
@@ -69,7 +67,7 @@ public class BuyAndSellAllPricesApp_BROKEN implements App {
                     try {
                         buyer.buyMinimumEthAmountOrder(price);
                         Sleep.milliseconds(100);
-                    } catch (ApiOrderException e) {
+                    } catch (Exception e) {
                         log.error(e);
                     }
                 });

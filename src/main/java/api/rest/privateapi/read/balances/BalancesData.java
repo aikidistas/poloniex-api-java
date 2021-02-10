@@ -1,6 +1,5 @@
 package api.rest.privateapi.read.balances;
 
-import api.rest.ApiReadException;
 import api.rest.Data;
 
 import java.math.BigDecimal;
@@ -16,25 +15,25 @@ public interface BalancesData extends Data<Map<String, BigDecimal>> {
             this.dataSource = dataSource;
         }
 
-        public Map<String, BigDecimal> positiveBalances() throws ApiReadException {
+        public Map<String, BigDecimal> positiveBalances() throws Exception {
             return dataSource.data().entrySet().stream()
                     .filter(balance -> BigDecimal.ZERO.compareTo(balance.getValue()) != 0)
                     .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         }
 
-        public BigDecimal data(String currency) throws ApiReadException {
+        public BigDecimal data(String currency) throws Exception {
             Map<String, BigDecimal> map = dataSource.data();
             if (!map.containsKey(currency)) {
-                throw new ApiReadException("Currency not found");
+                throw new Exception("Currency not found");
             }
             return dataSource.data().get(currency);
         }
 
-        public BigDecimal usdt() throws ApiReadException {
+        public BigDecimal usdt() throws Exception {
             return dataSource.data().get("USDT");
         }
 
-        public BigDecimal eth() throws ApiReadException {
+        public BigDecimal eth() throws Exception {
             return dataSource.data().get("ETH");
         }
     }

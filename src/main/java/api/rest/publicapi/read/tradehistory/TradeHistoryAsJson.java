@@ -1,6 +1,6 @@
 package api.rest.publicapi.read.tradehistory;
 
-import api.rest.ApiException;
+
 import api.rest.Json;
 import api.rest.publicapi.PublicApiCommandResultAsJson;
 
@@ -27,7 +27,7 @@ class TradeHistoryAsJson implements Json {
     }
 
     @Override
-    public String json() throws ApiException {
+    public String json() throws Exception {
         return result.json();
     }
 }

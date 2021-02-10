@@ -1,6 +1,6 @@
 package api.rest.privateapi;
 
-import api.rest.ApiException;
+
 import api.rest.HTTPClient;
 import api.rest.Json;
 import lombok.extern.log4j.Log4j2;
@@ -73,7 +73,7 @@ public class PrivateApiResultAsJson implements Json {
     }
 
     @Override
-    public String json() throws ApiException {
+    public String json() throws Exception {
         try {
             return new Retry<>(
                     this::resultAsJsonText,
@@ -83,11 +83,11 @@ public class PrivateApiResultAsJson implements Json {
         } catch (Exception e) {
             final String message = "failed to receive result json from private api call after multiple retries.";
             log.error(message, e);
-            throw new ApiException(message, e);
+            throw new Exception(message, e);
         }
     }
 
-    private String resultAsJsonText() throws ApiException {
+    private String resultAsJsonText() throws Exception {
         String nonceValue = String.valueOf(System.currentTimeMillis());
 
         try {
@@ -120,7 +120,7 @@ public class PrivateApiResultAsJson implements Json {
         } catch (IOException | NoSuchAlgorithmException | InvalidKeyException e) {
             final String message = "Call to Poloniex Private API resulted in exception - " + e.getMessage();
             log.warn(message, e);
-            throw new ApiException(message, e);
+            throw new Exception(message, e);
         }
     }
 }

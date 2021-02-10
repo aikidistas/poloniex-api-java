@@ -1,6 +1,6 @@
 package api.rest.publicapi.read.chartdata;
 
-import api.rest.ApiReadException;
+
 import api.rest.Json;
 import api.rest.publicapi.read.chartdata.dto.ChartDataDto;
 import api.rest.publicapi.read.chartdata.dto.ChartDataDtoDeserializer;
@@ -50,15 +50,15 @@ public class ChartData implements ChartDataResult {
     }
 
     @Override
-    public List<ChartDataDto> chartData() throws ApiReadException {
+    public List<ChartDataDto> chartData() throws Exception {
         try {
             String chartDataResult = chartDataJson.json();
 
             if (INVALID_CHART_DATA_DATE_RANGE_RESULT.equals(chartDataResult)) {
-                throw new ApiReadException("Can't read chart data. Invalid date range");
+                throw new Exception("Can't read chart data. Invalid date range");
             }
             if (INVALID_CHART_DATA_CURRENCY_PAIR_RESULT.equals(chartDataResult)) {
-                throw new ApiReadException("Can't read chart data. Invalid currency pair");
+                throw new Exception("Can't read chart data. Invalid currency pair");
             }
 
             try {
@@ -72,13 +72,13 @@ public class ChartData implements ChartDataResult {
             } catch (JsonSyntaxException | DateTimeParseException e) {
                 final String message = "Exception mapping chart data {} - {}";
                 log.error(message, chartDataResult, e.getMessage());
-                throw new ApiReadException(message, e);
+                throw new Exception(message, e);
             }
 
         } catch (Exception e) {
             final String message = "Error retrieving chartData - {}";
             log.error(message, e.getMessage());
-            throw new ApiReadException(message, e);
+            throw new Exception(message, e);
         }
     }
 }

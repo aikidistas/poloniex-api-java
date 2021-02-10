@@ -1,6 +1,5 @@
 package api.rest.privateapi.experimental;
 
-import api.rest.privateapi.trade.ApiOrderException;
 import api.rest.privateapi.trade.buy.PoloniexBuyOrder;
 import api.rest.privateapi.trade.dto.OrderResultDto;
 import lombok.extern.log4j.Log4j2;
@@ -24,7 +23,7 @@ public class PoloniexBuyOrderExperimental implements TradeOrderExperimental {
             result = buyOrder.execute();
             posted = true;
             postFailed = false;
-        } catch (ApiOrderException e) {
+        } catch (Exception e) {
             posted = false;
             postFailed = true;
             log.warn(e);

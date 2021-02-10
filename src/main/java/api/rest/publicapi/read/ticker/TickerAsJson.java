@@ -1,6 +1,6 @@
 package api.rest.publicapi.read.ticker;
 
-import api.rest.ApiException;
+
 import api.rest.Json;
 import api.rest.publicapi.PublicApiCommandResultAsJson;
 
@@ -18,7 +18,7 @@ class TickerAsJson implements Json {
     }
 
     @Override
-    public String json() throws ApiException {
+    public String json() throws Exception {
         return result.json();
     }
 }

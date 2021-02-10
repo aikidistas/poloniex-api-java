@@ -1,6 +1,6 @@
 package api.rest.publicapi.read.dayvolume;
 
-import api.rest.ApiException;
+
 import api.rest.Json;
 import api.rest.publicapi.PublicApiCommandResultAsJson;
 
@@ -17,7 +17,7 @@ class DayVolumeAsJson implements Json {
     }
 
     @Override
-    public String json() throws ApiException {
+    public String json() throws Exception {
         return jsonSource.json();
     }
 }

@@ -1,7 +1,6 @@
 package api.rest.privateapi.trade.trade;
 
 import api.rest.Json;
-import api.rest.privateapi.trade.ApiOrderException;
 import api.rest.privateapi.trade.dto.OrderResultDto;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
@@ -38,7 +37,7 @@ public class PoloniexTradeOrder implements TradeOrder {
     }
 
     @Override
-    public OrderResultDto execute() throws ApiOrderException {
+    public OrderResultDto execute() throws Exception {
         try {
             return new GsonBuilder()
                     .registerTypeAdapter(ZonedDateTime.class, (JsonDeserializer<ZonedDateTime>) (json, type, jsonDeserializationContext) -> ZonedDateTime.parse(json.getAsJsonPrimitive().getAsString(), DATE_TIME_FORMATTER))
@@ -50,7 +49,7 @@ public class PoloniexTradeOrder implements TradeOrder {
         } catch (Exception e) {
             final String message = "Error executing trade Api - {}";
             log.error(message, e.getMessage());
-            throw new ApiOrderException(message, e);
+            throw new Exception(message, e);
         }
     }
 }

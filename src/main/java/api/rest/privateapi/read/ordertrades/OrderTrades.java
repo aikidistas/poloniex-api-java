@@ -1,6 +1,6 @@
 package api.rest.privateapi.read.ordertrades;
 
-import api.rest.ApiReadException;
+
 import api.rest.Json;
 import api.rest.privateapi.read.ordertrades.dto.OrderTradeDto;
 import com.google.gson.GsonBuilder;
@@ -34,7 +34,7 @@ public class OrderTrades implements OrderTradesData {
     }
 
     @Override
-    public List<OrderTradeDto> data() throws ApiReadException {
+    public List<OrderTradeDto> data() throws Exception {
         try {
             return new GsonBuilder()
                     .registerTypeAdapter(ZonedDateTime.class, (JsonDeserializer<ZonedDateTime>) (json, type, jsonDeserializationContext) -> ZonedDateTime.parse(json.getAsJsonPrimitive().getAsString(), DATE_TIME_FORMATTER))
@@ -47,7 +47,7 @@ public class OrderTrades implements OrderTradesData {
         } catch (Exception e) {
             final String message = "Error retrieving data from Api - {}";
             log.error(message, e.getMessage());
-            throw new ApiReadException(message, e);
+            throw new Exception(message, e);
         }
     }
 }

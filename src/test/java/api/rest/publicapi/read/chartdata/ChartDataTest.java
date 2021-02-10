@@ -1,6 +1,6 @@
 package api.rest.publicapi.read.chartdata;
 
-import api.rest.ApiReadException;
+
 import api.rest.publicapi.read.chartdata.dto.ChartDataDto;
 import api.rest.publicapi.read.chartdata.enums.ChartDataPeriod;
 import lombok.SneakyThrows;
@@ -42,14 +42,14 @@ public class ChartDataTest {
     public void mapPoloniexChartDataToTicksHandlesInvalidCurrencyPairChartDataResult() {
         String results = "{\"error\":\"Invalid currency pair.\"}";
 
-        assertThrows(ApiReadException.class, () -> new ChartData(() -> results).chartData());
+        assertThrows(Exception.class, () -> new ChartData(() -> results).chartData());
     }
 
     @SneakyThrows
     @Test
     public void mapPoloniexChartDataToTicksHandlesInvalidDateRangeChartDataResult() {
         String results = "[{\"date\":0,\"high\":0,\"low\":0,\"open\":0,\"close\":0,\"volume\":0,\"quoteVolume\":0,\"weightedAverage\":0}]";
-        assertThrows(ApiReadException.class, () -> new ChartData(() -> results).chartData());
+        assertThrows(Exception.class, () -> new ChartData(() -> results).chartData());
     }
 
     @SneakyThrows

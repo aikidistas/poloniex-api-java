@@ -1,6 +1,5 @@
 package api.rest.privateapi.read.feeinfo;
 
-import api.rest.ApiReadException;
 import api.rest.Json;
 import api.rest.privateapi.read.feeinfo.dto.FeeInfoDto;
 import com.google.gson.Gson;
@@ -21,7 +20,7 @@ public class FeeInfo implements FeeInfoData {
     }
 
     @Override
-    public FeeInfoDto data() throws ApiReadException {
+    public FeeInfoDto data() throws Exception {
         try {
             return new Gson().fromJson(
                     jsonSource.json(),
@@ -31,7 +30,7 @@ public class FeeInfo implements FeeInfoData {
         } catch (Exception e) {
             final String message = "Error retrieving data from Api - {}";
             log.error(message, e.getMessage());
-            throw new ApiReadException(message, e);
+            throw new Exception(message, e);
         }
     }
 }

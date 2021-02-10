@@ -1,9 +1,8 @@
 package org.aikidistas.highfrequencytrading.domain.reseller;
 
-import api.rest.ApiReadException;
+
 import api.rest.privateapi.read.orderstatus.OrderStatus;
 import api.rest.privateapi.read.orderstatus.dto.OrderStatusDto;
-import api.rest.privateapi.trade.ApiOrderException;
 import api.rest.privateapi.trade.dto.OrderResultDto;
 import api.rest.privateapi.trade.sell.PoloniexSellOrder;
 import lombok.extern.log4j.Log4j2;
@@ -44,7 +43,7 @@ public class UsdtEthReSeller implements ReSeller {
         OrderResultDto buyResult = null;
         try {
             buyResult = buyer.buyEthOrder(buyPrice, buyEthAmount);
-        } catch (ApiOrderException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         log.info(buyResult);
@@ -61,14 +60,14 @@ public class UsdtEthReSeller implements ReSeller {
         final OrderStatus buyOrderStatusSource = new OrderStatus(buyResult.orderNumber.toString());
         try {
             orderStatus = buyOrderStatusSource.data();
-        } catch (ApiReadException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         log.info(orderStatus);
         while (Objects.isNull(orderStatus) || orderStatus.success == 1) {
             try {
                 orderStatus = buyOrderStatusSource.data();
-            } catch (ApiReadException e) {
+            } catch (Exception e) {
                 continue;
             }
 //            log.info(orderStatus);
@@ -88,15 +87,15 @@ public class UsdtEthReSeller implements ReSeller {
         OrderResultDto sellResult = null;
         try {
             sellResult = new PoloniexSellOrder(USDT_ETH, sellPrice, sellEthAmount).execute();
-        } catch (ApiOrderException e) {
+        } catch (Exception e) {
             log.error("Failed to execute sell ETH order", e);
             try {
                 sellResult = new PoloniexSellOrder(USDT_ETH, sellPrice, sellEthAmount).execute();
-            } catch (ApiOrderException ex) {
+            } catch (Exception ex) {
                 log.error("Failed to execute sell ETH order (2-nd try)", e);
                 try {
                     sellResult = new PoloniexSellOrder(USDT_ETH, sellPrice, sellEthAmount).execute();
-                } catch (ApiOrderException exc) {
+                } catch (Exception exc) {
                     log.error("Failed to execute sell ETH order (2-nd try)", e);
                     System.exit(500);
                 }
@@ -111,14 +110,14 @@ public class UsdtEthReSeller implements ReSeller {
         final OrderStatus sellOrderStatusSource = new OrderStatus(sellResult.orderNumber.toString());
         try {
             sellOrderStatus = sellOrderStatusSource.data();
-        } catch (ApiReadException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         log.info(sellOrderStatus);
         while (Objects.isNull(sellOrderStatus) || sellOrderStatus.success == 1) { // TODO: 2021-01-30 11:23:40,821 [main] ERROR PoloniexPrivateObjectApi - Error retrieving order status for 681686569211 - null     Exception in thread "main" java.lang.NullPointerException              at org.aikidistas.highfrequencytrading.OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL.run(OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL.java:113)       at org.aikidistas.highfrequencytrading.OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL.main(OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL.java:39)
             try {
                 sellOrderStatus = sellOrderStatusSource.data();
-            } catch (ApiReadException e) {
+            } catch (Exception e) {
                 continue;
             }
             ////            log.info(sellOrderStatus);

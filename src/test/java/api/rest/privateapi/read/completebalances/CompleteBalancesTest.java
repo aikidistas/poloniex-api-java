@@ -1,6 +1,6 @@
 package api.rest.privateapi.read.completebalances;
 
-import api.rest.ApiReadException;
+
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -66,7 +66,7 @@ public class CompleteBalancesTest {
                 + "	}\n"
                 + "}";
         final CompleteBalances.Smart completeBalances = new CompleteBalances.Smart(new CompleteBalances(() -> completeBalanceResults));
-        Assertions.assertThrows(ApiReadException.class, () -> completeBalances.data(currencyType));
+        Assertions.assertThrows(Exception.class, () -> completeBalances.data(currencyType));
     }
 
     @SneakyThrows

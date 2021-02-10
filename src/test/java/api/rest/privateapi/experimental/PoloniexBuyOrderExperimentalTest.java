@@ -1,7 +1,6 @@
 package api.rest.privateapi.experimental;
 
 import api.rest.privateapi.read.tradehistory.dto.TradeHistoryDto;
-import api.rest.privateapi.trade.ApiOrderException;
 import api.rest.privateapi.trade.buy.PoloniexBuyOrder;
 import api.rest.privateapi.trade.dto.OrderResultDto;
 import lombok.SneakyThrows;
@@ -50,10 +49,10 @@ class PoloniexBuyOrderExperimentalTest {
     void postFailed() {
         buyOrder = new PoloniexBuyOrderExperimental(
                 new PoloniexBuyOrder(() -> {
-                    throw new ApiOrderException("some error");
+                    throw new Exception("some error for unit testing");
                 })
         );
-        Assertions.assertThrows(ApiOrderException.class, () -> buyOrder.post());
+        Assertions.assertThrows(Exception.class, () -> buyOrder.post());
     }
 
     @Test

@@ -1,6 +1,6 @@
 package api.rest.publicapi.read.ticker;
 
-import api.rest.ApiReadException;
+
 import api.rest.Json;
 import api.rest.publicapi.read.ticker.dto.TickerDto;
 import com.google.gson.Gson;
@@ -23,14 +23,14 @@ public class Ticker implements TickerData {
     }
 
     @Override
-    public Map<String, TickerDto> data() throws ApiReadException {
+    public Map<String, TickerDto> data() throws Exception {
         try {
             return new Gson().fromJson(jsonSource.json(), new TypeToken<Map<String, TickerDto>>() {
             }.getType());
         } catch (Exception e) {
             final String message = "Error retrieving ticker - {}";
             log.error(message, e.getMessage());
-            throw new ApiReadException(message, e);
+            throw new Exception(message, e);
         }
     }
 }

@@ -1,6 +1,5 @@
 package api.rest.privateapi.read.tradehistory;
 
-import api.rest.ApiException;
 import api.rest.Json;
 import api.rest.privateapi.PrivateApiResultAsJson;
 import org.apache.http.NameValuePair;
@@ -38,7 +37,7 @@ class TradeHistoryPrivateAsJson implements Json {
     }
 
     @Override
-    public String json() throws ApiException {
+    public String json() throws Exception {
         return result.json();
     }
 }

@@ -1,13 +1,12 @@
 package org.aikidistas.highfrequencytrading.domain.buyer;
 
-import api.rest.privateapi.trade.ApiOrderException;
 import api.rest.privateapi.trade.dto.OrderResultDto;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public interface Buyer {
-    OrderResultDto buy(String currencyPair, BigDecimal price, BigDecimal amount) throws ApiOrderException;
+    OrderResultDto buy(String currencyPair, BigDecimal price, BigDecimal amount) throws Exception;
 
     final class Smart {
         private static final BigDecimal MIN_ETH_AMOUNT = new BigDecimal("0.0001");
@@ -19,11 +18,11 @@ public interface Buyer {
             this.buyer = buyer;
         }
 
-        public OrderResultDto buyEthOrder(BigDecimal price, BigDecimal amount) throws ApiOrderException {
+        public OrderResultDto buyEthOrder(BigDecimal price, BigDecimal amount) throws Exception {
             return buyer.buy("USDT_ETH", price, amount);
         }
 
-        public OrderResultDto buyMinimumEthAmountOrder(BigDecimal price) throws ApiOrderException {
+        public OrderResultDto buyMinimumEthAmountOrder(BigDecimal price) throws Exception {
             return buyEthOrder(price, minimumEthAmount(price));
         }
 

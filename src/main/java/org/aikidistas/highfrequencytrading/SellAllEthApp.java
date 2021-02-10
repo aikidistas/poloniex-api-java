@@ -1,9 +1,7 @@
 package org.aikidistas.highfrequencytrading;
 
-import api.rest.ApiReadException;
 import api.rest.privateapi.read.balances.Balances;
 import api.rest.privateapi.read.balances.BalancesData;
-import api.rest.privateapi.trade.ApiOrderException;
 import api.rest.privateapi.trade.sell.PoloniexSellOrder;
 import api.rest.publicapi.read.ticker.Ticker;
 import api.rest.publicapi.read.ticker.dto.TickerDto;
@@ -36,7 +34,7 @@ public class SellAllEthApp implements App {
                     ethBalance
             ).execute();
             log.info("sold");
-        } catch (ApiReadException | ApiOrderException e) {
+        } catch (Exception e) {
             log.error(e);
             System.exit(500);
         }

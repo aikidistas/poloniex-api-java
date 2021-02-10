@@ -1,6 +1,5 @@
 package api.rest.privateapi.read.completebalances;
 
-import api.rest.ApiException;
 import api.rest.Json;
 import api.rest.privateapi.PrivateApiResultAsJson;
 
@@ -13,7 +12,7 @@ class CompleteBalancesAsJson implements Json {
     }
 
     @Override
-    public String json() throws ApiException {
+    public String json() throws Exception {
         return result.json();
     }
 }

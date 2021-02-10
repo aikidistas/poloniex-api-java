@@ -1,6 +1,6 @@
 package api.rest.privateapi.trade.trade;
 
-import api.rest.ApiException;
+
 import api.rest.Json;
 import api.rest.privateapi.PrivateApiResultAsJson;
 import org.apache.http.NameValuePair;
@@ -29,7 +29,7 @@ public class PoloniexTradeOrderResultAsJson implements Json {
     }
 
     @Override
-    public String json() throws ApiException {
+    public String json() throws Exception {
         return result.json();
     }
 }

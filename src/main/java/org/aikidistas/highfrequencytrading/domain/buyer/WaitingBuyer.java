@@ -1,9 +1,8 @@
 package org.aikidistas.highfrequencytrading.domain.buyer;
 
-import api.rest.ApiReadException;
+
 import api.rest.privateapi.read.orderstatus.OrderStatus;
 import api.rest.privateapi.read.orderstatus.dto.OrderStatusDto;
-import api.rest.privateapi.trade.ApiOrderException;
 import api.rest.privateapi.trade.dto.OrderResultDto;
 import lombok.extern.log4j.Log4j2;
 import org.aikidistas.utils.Sleep;
@@ -21,7 +20,7 @@ public class WaitingBuyer implements Buyer {
     }
 
     @Override
-    public OrderResultDto buy(String currencyPair, BigDecimal price, BigDecimal amount) throws ApiOrderException {
+    public OrderResultDto buy(String currencyPair, BigDecimal price, BigDecimal amount) throws Exception {
         OrderResultDto buyResult = buyer.buy(currencyPair, price, amount);
 
         log.info(buyResult);
@@ -38,14 +37,14 @@ public class WaitingBuyer implements Buyer {
         final OrderStatus buyOrderStatusSource = new OrderStatus(buyResult.orderNumber.toString());
         try {
             orderStatus = buyOrderStatusSource.data();
-        } catch (ApiReadException e) {
+        } catch (Exception e) {
 
         }
         log.info(orderStatus);
         while (Objects.isNull(orderStatus) || orderStatus.success == 1) {
             try {
                 orderStatus = buyOrderStatusSource.data();
-            } catch (ApiReadException e) {
+            } catch (Exception e) {
                 continue;
             }
 //            log.info(orderStatus);

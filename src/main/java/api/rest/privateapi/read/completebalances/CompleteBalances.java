@@ -1,7 +1,5 @@
 package api.rest.privateapi.read.completebalances;
 
-import api.rest.ApiException;
-import api.rest.ApiReadException;
 import api.rest.Json;
 import api.rest.privateapi.read.completebalances.dto.CompleteBalanceDto;
 import com.google.gson.Gson;
@@ -25,17 +23,17 @@ public class CompleteBalances implements CompleteBalancesData {
     }
 
     @Override
-    public Map<String, CompleteBalanceDto> data() throws ApiReadException {
+    public Map<String, CompleteBalanceDto> data() throws Exception {
         try {
             return new Gson().fromJson(
                     jsonSource.json(),
                     new TypeToken<Map<String, CompleteBalanceDto>>() {
                     }.getType()
             );
-        } catch (ApiException e) {
+        } catch (Exception e) {
             final String message = "Can't read complete balances";
             log.error(message, e);
-            throw new ApiReadException(message, e);
+            throw new Exception(message, e);
         }
     }
 }

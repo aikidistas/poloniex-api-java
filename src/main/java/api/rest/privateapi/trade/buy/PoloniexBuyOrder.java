@@ -1,6 +1,5 @@
 package api.rest.privateapi.trade.buy;
 
-import api.rest.privateapi.trade.ApiOrderException;
 import api.rest.privateapi.trade.dto.OrderResultDto;
 import api.rest.privateapi.trade.trade.PoloniexTradeOrder;
 import api.rest.privateapi.trade.trade.TradeCommand;
@@ -25,7 +24,7 @@ public class PoloniexBuyOrder implements TradeOrder {
     }
 
     @Override
-    public OrderResultDto execute() throws ApiOrderException {
+    public OrderResultDto execute() throws Exception {
         return tradeOrder.execute();
     }
 }

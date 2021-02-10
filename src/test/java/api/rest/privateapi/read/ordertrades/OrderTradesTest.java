@@ -1,6 +1,5 @@
 package api.rest.privateapi.read.ordertrades;
 
-import api.rest.ApiReadException;
 import api.rest.privateapi.read.ordertrades.dto.OrderTradeDto;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Assertions;
@@ -33,7 +32,7 @@ public class OrderTradesTest {
 
     @Test
     public void throwsExceptionOnInvalidOrderNumber() {
-        Assertions.assertThrows(ApiReadException.class, () -> {
+        Assertions.assertThrows(Exception.class, () -> {
             String orderNumber = "123";
             printAndWait(
                     new OrderTrades(orderNumber).data()

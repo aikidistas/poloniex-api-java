@@ -1,6 +1,6 @@
 package api.rest.publicapi.read.chartdata;
 
-import api.rest.ApiException;
+
 import api.rest.Json;
 import api.rest.publicapi.PublicApiCommandResultAsJson;
 import api.rest.publicapi.read.chartdata.enums.ChartDataPeriod;
@@ -20,7 +20,7 @@ class ChartDataAsJson implements Json {
     }
 
     @Override
-    public String json() throws ApiException {
+    public String json() throws Exception {
         return result.json();
     }
 }

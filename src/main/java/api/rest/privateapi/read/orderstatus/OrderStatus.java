@@ -1,6 +1,6 @@
 package api.rest.privateapi.read.orderstatus;
 
-import api.rest.ApiReadException;
+
 import api.rest.Json;
 import api.rest.privateapi.read.orderstatus.dto.OrderStatusCheckDto;
 import api.rest.privateapi.read.orderstatus.dto.OrderStatusDto;
@@ -23,7 +23,7 @@ public class OrderStatus implements OrderStatusData {
     }
 
     @Override
-    public OrderStatusDto data() throws ApiReadException {
+    public OrderStatusDto data() throws Exception {
         try {
 
 
@@ -44,7 +44,7 @@ public class OrderStatus implements OrderStatusData {
         } catch (Exception e) {
             final String message = "Error retrieving data from Api - {}";
             log.error(message, e.getMessage());
-            throw new ApiReadException(message, e);
+            throw new Exception(message, e);
         }
     }
 

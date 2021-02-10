@@ -2,5 +2,5 @@ package api.rest;
 
 @FunctionalInterface
 public interface Json {
-    String json() throws ApiException;
+    String json() throws Exception;
 }

@@ -1,9 +1,8 @@
 package org.aikidistas.highfrequencytrading;
 
-import api.rest.ApiReadException;
+
 import api.rest.privateapi.read.orderstatus.OrderStatus;
 import api.rest.privateapi.read.orderstatus.dto.OrderStatusDto;
-import api.rest.privateapi.trade.ApiOrderException;
 import api.rest.privateapi.trade.dto.OrderResultDto;
 import api.rest.privateapi.trade.sell.PoloniexSellOrder;
 import api.rest.publicapi.read.ticker.Ticker;
@@ -57,7 +56,7 @@ public class OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL implements App {
             TickerDto ticker;
             try {
                 ticker = new TickerData.Smart(new Ticker()).data(USDT_ETH);
-            } catch (ApiReadException e) {
+            } catch (Exception e) {
                 continue;
             }
             log.info(ticker.toString());
@@ -72,7 +71,7 @@ public class OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL implements App {
             OrderResultDto buyResult;
             try {
                 buyResult = buyer.buyMinimumEthAmountOrder(buyPrice);
-            } catch (ApiOrderException e) {
+            } catch (Exception e) {
                 continue;
             }
             if (Objects.isNull(buyResult) || Objects.isNull(buyResult.orderNumber)) {
@@ -90,14 +89,14 @@ public class OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL implements App {
             final OrderStatus orderStatusSource = new OrderStatus(buyResult.orderNumber.toString());
             try {
                 orderStatus = orderStatusSource.data();
-            } catch (ApiReadException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             log.info(orderStatus);
             while (orderStatus == null || orderStatus.success == 1) {
                 try {
                     orderStatus = orderStatusSource.data();
-                } catch (ApiReadException e) {
+                } catch (Exception e) {
                     continue;
                 }
                 Sleep.seconds(1);
@@ -118,15 +117,15 @@ public class OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL implements App {
             OrderResultDto sellResult = null;
             try {
                 sellResult = new PoloniexSellOrder(USDT_ETH, sellPrice, sellEthAmount).execute();
-            } catch (ApiOrderException e) {
+            } catch (Exception e) {
                 log.error("Failed to execute sell ETH order", e);
                 try {
                     sellResult = new PoloniexSellOrder(USDT_ETH, sellPrice, sellEthAmount).execute();
-                } catch (ApiOrderException ex) {
+                } catch (Exception ex) {
                     log.error("Failed to execute sell ETH order (2-nd try)", e);
                     try {
                         sellResult = new PoloniexSellOrder(USDT_ETH, sellPrice, sellEthAmount).execute();
-                    } catch (ApiOrderException exc) {
+                    } catch (Exception exc) {
                         log.error("Failed to execute sell ETH order (2-nd try)", e);
                         System.exit(500);
                     }
@@ -139,14 +138,14 @@ public class OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL implements App {
             final OrderStatus sellOrderStatusSource = new OrderStatus(sellResult.orderNumber.toString());
             try {
                 sellOrderStatus = sellOrderStatusSource.data();
-            } catch (ApiReadException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             log.info(sellOrderStatus);
             while (sellOrderStatus != null && sellOrderStatus.success == 1) { // TODO: 2021-01-30 11:23:40,821 [main] ERROR PoloniexPrivateObjectApi - Error retrieving order status for 681686569211 - null     Exception in thread "main" java.lang.NullPointerException              at org.aikidistas.highfrequencytrading.OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL.run(OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL.java:113)       at org.aikidistas.highfrequencytrading.OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL.main(OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL.java:39)
                 try {
                     sellOrderStatus = sellOrderStatusSource.data();
-                } catch (ApiReadException e) {
+                } catch (Exception e) {
                     break;
                 }
                 ////            log.info(sellOrderStatus);

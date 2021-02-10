@@ -1,6 +1,6 @@
 package api.rest.publicapi.read.dayvolume;
 
-import api.rest.ApiReadException;
+
 import api.rest.Json;
 import api.rest.publicapi.read.chartdata.dto.ChartDataDto;
 import api.rest.publicapi.read.chartdata.dto.ChartDataDtoDeserializer;
@@ -36,7 +36,7 @@ public class DayVolume implements DayVolumeData {
     }
 
     @Override
-    public DayVolumeDto data() throws ApiReadException {
+    public DayVolumeDto data() throws Exception {
         try {
             return new GsonBuilder()
                     .registerTypeAdapter(ZonedDateTime.class, (JsonDeserializer<ZonedDateTime>) (json, type, jsonDeserializationContext) -> ZonedDateTime.parse(json.getAsJsonPrimitive().getAsString(), DATE_TIME_FORMATTER)).registerTypeAdapter(ChartDataDto.class, new ChartDataDtoDeserializer())
@@ -45,7 +45,7 @@ public class DayVolume implements DayVolumeData {
         } catch (Exception e) {
             final String message = "Error retrieving 24hVolume - {}";
             log.error(message, e.getMessage());
-            throw new ApiReadException(message, e);
+            throw new Exception(message, e);
         }
     }
 }

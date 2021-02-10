@@ -1,6 +1,6 @@
 package api.rest.privateapi.read.openorders;
 
-import api.rest.ApiReadException;
+
 import api.rest.Json;
 import api.rest.privateapi.read.openorders.dto.OpenOrderDto;
 import com.google.gson.Gson;
@@ -27,7 +27,7 @@ public final class OpenOrders implements OpenOrdersData {
     }
 
     @Override
-    public List<OpenOrderDto> data() throws ApiReadException {
+    public List<OpenOrderDto> data() throws Exception {
         try {
             return new Gson().fromJson(
                     jsonSource.json(),
@@ -37,7 +37,7 @@ public final class OpenOrders implements OpenOrdersData {
         } catch (Exception e) {
             final String message = "Error retrieving data from Api - {}";
             log.error(message, e.getMessage());
-            throw new ApiReadException(message, e);
+            throw new Exception(message, e);
         }
     }
 }

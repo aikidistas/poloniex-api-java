@@ -1,6 +1,6 @@
 package api.rest.publicapi.read.ticker;
 
-import api.rest.ApiReadException;
+
 import api.rest.Data;
 import api.rest.publicapi.read.ticker.dto.TickerDto;
 
@@ -15,11 +15,11 @@ public interface TickerData extends Data<Map<String, TickerDto>> {
             this.tickerData = tickerData;
         }
 
-        public TickerDto data(String currencyPair) throws ApiReadException {
+        public TickerDto data(String currencyPair) throws Exception {
             return tickerData.data().get(currencyPair);
         }
 
-        public TickerDto usdtEthTicker() throws ApiReadException {
+        public TickerDto usdtEthTicker() throws Exception {
             return data("USDT_ETH");
         }
     }
