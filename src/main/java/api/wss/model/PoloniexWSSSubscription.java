@@ -1,6 +1,7 @@
 package api.wss.model;
 
-import com.google.gson.Gson;
+import lombok.AllArgsConstructor;
+import lombok.ToString;
 
 /**
  * Convenience subscriptions are provided. A full list of currency pair codes: 
@@ -25,6 +26,8 @@ import com.google.gson.Gson;
  *
  * @author David
  */
+@AllArgsConstructor
+@ToString
 public class PoloniexWSSSubscription {
 
     public final static transient PoloniexWSSSubscription TICKER = new PoloniexWSSSubscription("1002");
@@ -33,16 +36,6 @@ public class PoloniexWSSSubscription {
     public final static transient PoloniexWSSSubscription USDT_BTC = new PoloniexWSSSubscription("121");
     public final static transient PoloniexWSSSubscription USDT_ETH = new PoloniexWSSSubscription("149");
 
-    public final String command;
+    public final String command = "subscribe";
     public final String channel;
-
-    public PoloniexWSSSubscription(String channel) {
-        this.command = "subscribe";
-        this.channel = channel;
-    }
-
-    @Override
-    public String toString() {
-        return new Gson().toJson(this);
-    }
 }

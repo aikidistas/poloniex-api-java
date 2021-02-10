@@ -1,13 +1,11 @@
 package api.rest.publicapi.read.chartdata.dto;
 
-import com.google.gson.Gson;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
-/**
- * @author David
- */
+@ToString
 public class ChartDataDto {
 
     public final ZonedDateTime date;
@@ -28,10 +26,5 @@ public class ChartDataDto {
         this.volume = volume;
         this.quoteVolume = quoteVolume;
         this.weightedAverage = weightedAverage;
-    }
-
-    @Override
-    public String toString() {
-        return new Gson().toJson(this);
     }
 }

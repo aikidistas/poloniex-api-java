@@ -1,11 +1,11 @@
 package api.rest.privateapi.read.orderstatus.dto;
 
-import com.google.gson.Gson;
+import lombok.AllArgsConstructor;
+import lombok.ToString;
 
-/**
- * @author guodong
- */
-public class OrderStatusDetailDto {
+@AllArgsConstructor
+@ToString
+class OrderStatusDetailDto {
     public final String status;
     public final String rate;
     public final String amount;
@@ -14,20 +14,4 @@ public class OrderStatusDetailDto {
     public final String total;
     public final String type;
     public final String startingAmount;
-
-    public OrderStatusDetailDto(String status, String rate, String amount, String currencyPair, String date, String total, String type, String startingAmount) {
-        this.status = status;
-        this.rate = rate;
-        this.amount = amount;
-        this.currencyPair = currencyPair;
-        this.date = date;
-        this.total = total;
-        this.type = type;
-        this.startingAmount = startingAmount;
-    }
-
-	@Override
-	public String toString() {
-		return new Gson().toJson(this);
-	}
 }

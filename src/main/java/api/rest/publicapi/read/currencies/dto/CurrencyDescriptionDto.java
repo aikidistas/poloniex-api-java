@@ -1,9 +1,10 @@
 package api.rest.publicapi.read.currencies.dto;
 
-import com.google.gson.Gson;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
+@ToString
 public class CurrencyDescriptionDto {
     public String blockchain;
     public String currencyType;
@@ -18,9 +19,4 @@ public class CurrencyDescriptionDto {
     public Long minConf;
     public String name;
     public BigDecimal txFee;
-
-    @Override
-    public String toString() {
-        return new Gson().toJson(this);
-    }
 }

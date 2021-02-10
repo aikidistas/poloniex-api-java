@@ -1,7 +1,8 @@
 package api.rest.publicapi.read.currencies.dto;
 
-import com.google.gson.Gson;
+import lombok.ToString;
 
+@ToString
 public class CurrenciesDto {
 
     public CurrencyDescriptionDto _1CR;
@@ -62,9 +63,4 @@ public class CurrenciesDto {
     public CurrencyDescriptionDto BNT;
     public CurrencyDescriptionDto BOND;
     public CurrencyDescriptionDto BONES;
-
-    @Override
-    public String toString() {
-        return new Gson().toJson(this);
-    }
 }

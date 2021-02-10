@@ -2,10 +2,11 @@
 package api.rest.publicapi.read.dayvolume.dto;
 
 import api.rest.publicapi.read.dayvolume.dto.DayVolumeData.*;
-import com.google.gson.Gson;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
+@ToString
 public class DayVolumeDto {
 
     public BNBBTC BNB_BTC;
@@ -315,10 +316,4 @@ public class DayVolumeDto {
     public BigDecimal totalUSDT;
     public BigDecimal totalXMR;
     public BigDecimal totalXUSD;
-
-    @Override
-    public String toString() {
-        return new Gson().toJson(this);
-    }
-
 }
