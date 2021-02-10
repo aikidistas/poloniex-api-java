@@ -1,4 +1,4 @@
-package org.aikidistas.highfrequencytrading.domain.buyer;
+package org.aikidistas.highfrequencytrading.domain.seller;
 
 
 import api.rest.privateapi.read.orderstatus.OrderStatus;
@@ -8,20 +8,21 @@ import org.aikidistas.utils.Sleep;
 
 import java.math.BigDecimal;
 
+// TODO: create WaitingTrader (for sell and buy orders)
 @Log4j2
-public class WaitingBuyer implements Buyer {
+public class WaitingSeller implements Seller {
 
-    private final Buyer buyer;
+    private final Seller seller;
 
-    public WaitingBuyer(Buyer buyer) {
-        this.buyer = buyer;
+    public WaitingSeller(Seller seller) {
+        this.seller = seller;
     }
 
     @Override
-    public OrderResultDto buy(String currencyPair, BigDecimal price, BigDecimal amount) throws Exception {
-        OrderResultDto buyResult = buyer.buy(currencyPair, price, amount);
+    public OrderResultDto sell(String currencyPair, BigDecimal price, BigDecimal amount) throws Exception {
+        OrderResultDto sellResult = seller.sell(currencyPair, price, amount);
 
-        final OrderStatus orderStatusSource = new OrderStatus(buyResult.orderNumber);
+        final OrderStatus orderStatusSource = new OrderStatus(sellResult.orderNumber);
 
         while (true) {
             try {
@@ -34,6 +35,6 @@ public class WaitingBuyer implements Buyer {
         }
 
         // TODO: update resulted trades from new api call, before returning this value. This way, we will always have executed trades returned
-        return buyResult;
+        return sellResult;
     }
 }

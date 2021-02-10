@@ -13,6 +13,11 @@ public class OrderStatus implements OrderStatusData {
 
     private final Json jsonSource;
 
+
+    public OrderStatus(Long orderNumber) {
+        this(new OrderStatusAsJson(orderNumber.toString()));
+    }
+
     public OrderStatus(String orderNumber) {
         this(new OrderStatusAsJson(orderNumber));
     }

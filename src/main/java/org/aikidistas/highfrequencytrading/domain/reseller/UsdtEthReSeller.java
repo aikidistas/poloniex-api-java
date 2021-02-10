@@ -114,7 +114,7 @@ public class UsdtEthReSeller implements ReSeller {
             e.printStackTrace();
         }
         log.info(sellOrderStatus);
-        while (Objects.isNull(sellOrderStatus) || sellOrderStatus.success == 1) { // TODO: 2021-01-30 11:23:40,821 [main] ERROR PoloniexPrivateObjectApi - Error retrieving order status for 681686569211 - null     Exception in thread "main" java.lang.NullPointerException              at org.aikidistas.highfrequencytrading.OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL.run(OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL.java:113)       at org.aikidistas.highfrequencytrading.OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL.main(OneCentProfitTraderApp_BROKEN_BUY_AND_STOP_ON_NULL.java:39)
+        while (Objects.isNull(sellOrderStatus) || sellOrderStatus.success == 1) { // TODO: 2021-01-30 11:23:40,821 [main] ERROR PoloniexPrivateObjectApi - Error retrieving order status for 681686569211 - null     Exception in thread "main" java.lang.NullPointerException              at org.aikidistas.highfrequencytrading.OneCentProfitTraderApp.run(OneCentProfitTraderApp.java:113)       at org.aikidistas.highfrequencytrading.OneCentProfitTraderApp.main(OneCentProfitTraderApp.java:39)
             try {
                 sellOrderStatus = sellOrderStatusSource.data();
             } catch (Exception e) {

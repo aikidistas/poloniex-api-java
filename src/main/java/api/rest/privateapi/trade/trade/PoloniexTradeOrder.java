@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.reflect.TypeToken;
 import lombok.extern.log4j.Log4j2;
+import org.cactoos.Scalar;
 
 import java.math.BigDecimal;
 import java.time.ZoneOffset;
@@ -26,10 +27,18 @@ public class PoloniexTradeOrder implements TradeOrder {
     private final Json jsonSource;
 
     public PoloniexTradeOrder(TradeCommand command, String currencyPair, BigDecimal price, BigDecimal amount) {
+        this(command, currencyPair, () -> price, () -> amount);
+    }
+
+    public PoloniexTradeOrder(TradeCommand command, String currencyPair, Scalar<BigDecimal> price, Scalar<BigDecimal> amount) {
         this(new PoloniexTradeOrderResultAsJson(command.toString(), currencyPair, price, amount));
     }
 
     public PoloniexTradeOrder(TradeCommand command, String currencyPair, BigDecimal price, BigDecimal amount, boolean fillOrKill, boolean immediateOrCancel, boolean postOnly) {
+        this(command, currencyPair, () -> price, () -> amount, fillOrKill, immediateOrCancel, postOnly);
+    }
+
+    public PoloniexTradeOrder(TradeCommand command, String currencyPair, Scalar<BigDecimal> price, Scalar<BigDecimal> amount, boolean fillOrKill, boolean immediateOrCancel, boolean postOnly) {
         this(new PoloniexTradeOrderResultAsJson(command.toString(), currencyPair, price, amount, fillOrKill, immediateOrCancel, postOnly));
     }
 

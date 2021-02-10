@@ -24,6 +24,7 @@ public class OpenOrdersInfoApp implements App {
             continuouslyPrintOpenOrders();
         } catch (Exception e) {
             log.error("failed to continuously print open orders", e);
+            System.out.println("failed to continuously print open orders. " + e.getMessage());
         }
     }
 
