@@ -12,8 +12,8 @@ import java.time.Duration;
 @Log4j2
 public final class PublicApiCommandResultAsJson implements Json {
     private static final String PUBLIC_URL = "https://poloniex.com/public?";
-    public static final int RETRY_ATTEMPTS = 5;
-    public static final int RETRY_WAIT_MILLIS = 200;
+    public static final int RETRY_ATTEMPTS = 10;
+    public static final int RETRY_WAIT_MILLIS = 1000;
 
     private final HTTPClient httpClient;
     private final String command;

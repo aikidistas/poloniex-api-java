@@ -28,7 +28,7 @@ public class PrivateApiResultAsJson implements Json {
     private final HTTPClient client;
 
     public static final int RETRY_ATTEMPTS = 5;
-    public static final int RETRY_WAIT_MILLIS = 200;
+    public static final int RETRY_WAIT_MILLIS = 1000;
 
     private final String command;
     private final List<NameValuePair> additionalPostParams;
