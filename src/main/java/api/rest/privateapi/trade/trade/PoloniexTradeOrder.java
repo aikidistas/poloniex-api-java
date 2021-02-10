@@ -13,6 +13,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.temporal.ChronoField;
+import java.util.Objects;
 
 @Log4j2
 public class PoloniexTradeOrder implements TradeOrder {
@@ -38,6 +39,16 @@ public class PoloniexTradeOrder implements TradeOrder {
 
     @Override
     public OrderResultDto execute() throws Exception {
+        OrderResultDto result = orderResult();
+
+        if (Objects.nonNull(result.error)) {
+            throw new Exception("Failed to execute trade order. Error received from api: " + result.error);
+        }
+
+        return result;
+    }
+
+    private OrderResultDto orderResult() throws Exception {
         try {
             return new GsonBuilder()
                     .registerTypeAdapter(ZonedDateTime.class, (JsonDeserializer<ZonedDateTime>) (json, type, jsonDeserializationContext) -> ZonedDateTime.parse(json.getAsJsonPrimitive().getAsString(), DATE_TIME_FORMATTER))
