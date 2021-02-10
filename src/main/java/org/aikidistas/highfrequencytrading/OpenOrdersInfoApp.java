@@ -12,6 +12,7 @@ import java.util.List;
 public class OpenOrdersInfoApp implements App {
 
     public static final String USDT_ETH = "USDT_ETH";
+    public static final int REPEAT_INTERVAL_IN_SECONDS = 3;
 
     public static void main(String... args) {
         new OpenOrdersInfoApp().run();
@@ -36,6 +37,6 @@ public class OpenOrdersInfoApp implements App {
         List<OpenOrderDto> orders = new OpenOrders(USDT_ETH).data();
         System.out.println("================================================================================================================================");
         orders.forEach(System.out::println);
-        Sleep.seconds(10);
+        Sleep.seconds(REPEAT_INTERVAL_IN_SECONDS);
     }
 }
