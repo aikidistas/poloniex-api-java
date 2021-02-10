@@ -9,20 +9,33 @@ import org.aikidistas.utils.Sleep;
 import java.util.List;
 
 @Log4j2
-public class OpenOrdersInfoApp {
-    public static void main(String... args) throws InterruptedException {
-        final String usdtEth = "USDT_ETH";
-        while (true) {
+public class OpenOrdersInfoApp implements App {
 
-            List<OpenOrderDto> orders = null; // TODO: {"orderNumber":"681683435348","type":"sell","rate":1354.98760672,"amount":0.00074097,"total":1.00400516}            2021-01-30 11:39:59,369 [main] ERROR PoloniexPrivateObjectApi - Error retrieving open orders for USDT_ETH - java.lang.IllegalStateException: Expected BEGIN_ARRAY but was BEGIN_OBJECT at line 1 column 2 path $
-            try {
-                orders = new OpenOrders(usdtEth).data();
-            } catch (Exception e) {
-                continue;
-            }
-            System.out.println("================================================================================================================================");
-            orders.forEach(System.out::println);
-            Sleep.seconds(10);
+    public static final String USDT_ETH = "USDT_ETH";
+
+    public static void main(String... args) {
+        new OpenOrdersInfoApp().run();
+    }
+
+    @Override
+    public void run() {
+        try {
+            continuouslyPrintOpenOrders();
+        } catch (Exception e) {
+            log.error("failed to continuously print open orders", e);
         }
+    }
+
+    private void continuouslyPrintOpenOrders() throws Exception {
+        while (true) {
+            printOpenOrders();
+        }
+    }
+
+    private void printOpenOrders() throws Exception {
+        List<OpenOrderDto> orders = new OpenOrders(USDT_ETH).data();
+        System.out.println("================================================================================================================================");
+        orders.forEach(System.out::println);
+        Sleep.seconds(10);
     }
 }
