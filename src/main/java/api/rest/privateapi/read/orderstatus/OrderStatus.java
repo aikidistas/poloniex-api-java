@@ -4,7 +4,6 @@ package api.rest.privateapi.read.orderstatus;
 import api.rest.Json;
 import api.rest.privateapi.read.orderstatus.dto.OrderStatusCheckDto;
 import api.rest.privateapi.read.orderstatus.dto.OrderStatusDto;
-import api.rest.privateapi.read.orderstatus.dto.OrderStatusErrorDto;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import lombok.extern.log4j.Log4j2;
@@ -25,20 +24,14 @@ public class OrderStatus implements OrderStatusData {
     @Override
     public OrderStatusDto data() throws Exception {
         try {
-
-
             String orderStatusJson = jsonSource.json();
-            OrderStatusDto orderStatus = null;
-            OrderStatusCheckDto orderStatusCheck;
-            orderStatusCheck = new Gson().fromJson(orderStatusJson, new TypeToken<OrderStatusCheckDto>() {
+            OrderStatusCheckDto orderStatusCheck = new Gson().fromJson(orderStatusJson, new TypeToken<OrderStatusCheckDto>() {
             }.getType());
-            if (orderStatusCheck.success == 1) {
+            if (orderStatusCheck.success == 1) {    // TODO: cleanup all this different dto stuff, and error handling. On error throw exception
                 return new Gson().fromJson(orderStatusJson, new TypeToken<OrderStatusDto>() {
                 }.getType());
             } else {
-                OrderStatusErrorDto error = new Gson().fromJson(orderStatusJson, new TypeToken<OrderStatusErrorDto>() {
-                }.getType());
-                return new OrderStatusDto(0, error.result.get("error"), null);
+                throw new Exception("Failed to execute OrderStatus. Api response: " + orderStatusJson);
             }
 
         } catch (Exception e) {

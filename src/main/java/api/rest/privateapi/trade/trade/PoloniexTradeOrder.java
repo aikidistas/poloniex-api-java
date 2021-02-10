@@ -44,6 +44,9 @@ public class PoloniexTradeOrder implements TradeOrder {
         if (Objects.nonNull(result.error)) {
             throw new Exception("Failed to execute trade order. Error received from api: " + result.error);
         }
+        if (Objects.isNull(result.orderNumber)) {
+            throw new Exception("Failed to execute trade order. orderNumber is null. Received Order result: " + result.toString());
+        }
 
         return result;
     }
