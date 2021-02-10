@@ -1,30 +1,16 @@
 package api.rest.privateapi.read.openorders.dto;
 
-import com.google.gson.Gson;
+import lombok.AllArgsConstructor;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 
-/**
- * @author David
- */
+@AllArgsConstructor
+@ToString
 public class OpenOrderDto {
     public final String orderNumber;
     public final String type;
     public final BigDecimal rate;
     public final BigDecimal amount;
     public final BigDecimal total;
-
-    public OpenOrderDto(String orderNumber, String type, BigDecimal rate, BigDecimal amount, BigDecimal total) {
-        this.orderNumber = orderNumber;
-        this.type = type;
-        this.rate = rate;
-        this.amount = amount;
-        this.total = total;
-    }
-
-    @Override
-    public String toString()
-    {
-        return new Gson().toJson(this);
-    }
 }

@@ -1,13 +1,13 @@
 package api.rest.privateapi.read.tradehistory.dto;
 
-import com.google.gson.Gson;
+import lombok.AllArgsConstructor;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 
-/**
- * @author David
- */
+@AllArgsConstructor
+@ToString
 public class TradeHistoryDto {
     public final Long globalTradeID;
     public final String tradeID;
@@ -19,23 +19,4 @@ public class TradeHistoryDto {
     public final String orderNumber;
     public final String type;
     public final String category;
-
-    public TradeHistoryDto(Long globalTradeID, String tradeID, ZonedDateTime date, BigDecimal rate, BigDecimal amount, BigDecimal total, BigDecimal fee, String orderNumber, String type, String category) {
-        this.globalTradeID = globalTradeID;
-        this.tradeID = tradeID;
-        this.date = date;
-        this.rate = rate;
-        this.amount = amount;
-        this.total = total;
-        this.fee = fee;
-        this.orderNumber = orderNumber;
-        this.type = type;
-        this.category = category;
-    }
-
-    @Override
-    public String toString()
-    {
-        return new Gson().toJson(this);
-    }
 }
