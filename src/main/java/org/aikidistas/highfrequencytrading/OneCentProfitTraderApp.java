@@ -7,10 +7,9 @@ import org.aikidistas.highfrequencytrading.domain.Multiplication;
 import org.aikidistas.highfrequencytrading.domain.Sum;
 import org.aikidistas.highfrequencytrading.domain.buyer.Buyer;
 import org.aikidistas.highfrequencytrading.domain.buyer.PoloniexBuyer;
-import org.aikidistas.highfrequencytrading.domain.buyer.WaitingBuyer;
-import org.aikidistas.highfrequencytrading.domain.seller.PoloniexSeller;
-import org.aikidistas.highfrequencytrading.domain.seller.Seller;
-import org.aikidistas.highfrequencytrading.domain.seller.WaitingSeller;
+import org.aikidistas.highfrequencytrading.domain.reseller.ReSeller;
+import org.aikidistas.highfrequencytrading.domain.reseller.UsdtEthReSeller;
+import org.cactoos.scalar.Sticky;
 
 import java.math.BigDecimal;
 
@@ -27,8 +26,7 @@ public class OneCentProfitTraderApp implements App {
 
     public static final String USDT_ETH = "USDT_ETH";
     public static final BigDecimal MINIMUM_NUMBER_INCREMENT = new BigDecimal("0.00000001");
-    private final Buyer.Smart waitingBuyer = new Buyer.Smart(new WaitingBuyer(new PoloniexBuyer()));
-    private final Seller.Smart waitingSeller = new Seller.Smart(new WaitingSeller(new PoloniexSeller()));
+    private final Buyer.Smart buyer = new Buyer.Smart(new PoloniexBuyer());
 
     public static void main(String[] args) {
         App app = new OneCentProfitTraderApp();
@@ -52,35 +50,47 @@ public class OneCentProfitTraderApp implements App {
 
     private void buyAndSell() throws Exception {
 
-        BigDecimal buyPrice = new Sum(
+        Sticky<BigDecimal> buyPrice = buyPrice();
+
+        Sticky<BigDecimal> buyAmount = buyAmount(buyPrice);
+
+        Sticky<BigDecimal> sellPrice = sellPrice(buyPrice);
+
+        Sticky<BigDecimal> sellAmount = sellAmount(buyAmount);
+
+        ReSeller reSeller = new UsdtEthReSeller(
+                buyPrice,
+                buyAmount,
+                sellPrice,
+                sellAmount
+        );
+
+        reSeller.buyAndSell();
+    }
+
+    private Sticky<BigDecimal> sellAmount(Sticky<BigDecimal> buyAmount) {
+        return new Sticky<>(new Multiplication(
+                buyAmount,
+                () -> new BigDecimal("0.99875")
+        ));
+    }
+
+    private Sticky<BigDecimal> sellPrice(Sticky<BigDecimal> buyPrice) {
+        return new Sticky<>(new Multiplication(
+                buyPrice,
+                () -> new BigDecimal("1.004")
+        ));
+    }
+
+    private Sticky<BigDecimal> buyAmount(Sticky<BigDecimal> buyPrice) {
+        return new Sticky<>(() -> buyer.minimumEthAmount(buyPrice.value()));
+    }
+
+    private Sticky<BigDecimal> buyPrice() throws Exception {
+        return new Sticky<>(new Sum(
                 new Ticker.Smart(new Ticker()).usdtEthTicker().highestBid,
                 MINIMUM_NUMBER_INCREMENT
-        ).value();
-
-        // TODO: new ReSeller(buyer, new Seller()).reSell();
-        //======================================
-        // BUY               and wait for completed trades
-        waitingBuyer.buyMinimumEthAmountOrder(buyPrice);
-        System.out.println("==============================");
-        System.out.println("BUY [" + waitingBuyer.minimumEthAmount(buyPrice) + "] eth for price: " + buyPrice);
-
-
-        BigDecimal buyEthAmount = waitingBuyer.minimumEthAmount(buyPrice);
-
-        //===================================================
-        // SELL
-        final BigDecimal sellPrice = new Multiplication(
-                buyPrice,
-                new BigDecimal("1.004")
-        ).value();
-        final BigDecimal sellAmount = new Multiplication(
-                buyEthAmount,
-                new BigDecimal("0.99875")
-        ).value();
-        waitingSeller.sellEthOrder(sellPrice, sellAmount);
-
-        System.out.println("==============================");
-        System.out.println("SELL [ " + sellAmount + " ] eth for price: " + sellPrice);
+        ));
     }
 }
 
