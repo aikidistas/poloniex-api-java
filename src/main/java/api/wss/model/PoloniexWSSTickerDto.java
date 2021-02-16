@@ -11,14 +11,15 @@ import java.math.BigDecimal;
 @Builder
 public class PoloniexWSSTickerDto {
 
-    public final Double currencyPair;
+//    public final Double currencyPair;
+public final int currencyPair;
     public final BigDecimal lastPrice;
     public final BigDecimal lowestAsk;
     public final BigDecimal highestBid;
     public final BigDecimal percentChange;
     public final BigDecimal baseVolume;
     public final BigDecimal quoteVolume;
-    public final Boolean isFrozen;
+    public final boolean isFrozen;
     public final BigDecimal twentyFourHourHigh;
     public final BigDecimal twentyFourHourLow;
 }

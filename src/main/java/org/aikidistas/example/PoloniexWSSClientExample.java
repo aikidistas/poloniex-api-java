@@ -1,15 +1,13 @@
 package org.aikidistas.example;
 
 import api.wss.WSSClient;
-import api.wss.handler.LoggingMessageHandler;
-import api.wss.handler.TickerMessageHandler;
+import api.wss.handler.TickerUsdtEthMessageHandler;
 import api.wss.model.PoloniexWSSSubscription;
 import lombok.extern.log4j.Log4j2;
 
-/**
- *
- * @author David
- */
+import java.util.concurrent.TimeUnit;
+
+
 @Log4j2
 public class PoloniexWSSClientExample {
 
@@ -29,10 +27,9 @@ public class PoloniexWSSClientExample {
 
     public void subscribe() throws Exception {
         try (WSSClient wssClient = new WSSClient(ENDPOINT_URL)) {
-            wssClient.addSubscription(PoloniexWSSSubscription.HEARTBEAT, new LoggingMessageHandler());
-            wssClient.addSubscription(PoloniexWSSSubscription.TICKER, new TickerMessageHandler());
-            wssClient.run(600000);
-        }
 
+            wssClient.addSubscription(PoloniexWSSSubscription.TICKER, new TickerUsdtEthMessageHandler());
+            wssClient.run(TimeUnit.SECONDS.toMillis(60));
+        }
     }
 }

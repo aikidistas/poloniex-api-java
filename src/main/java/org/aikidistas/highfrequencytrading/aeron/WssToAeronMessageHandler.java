@@ -2,64 +2,70 @@
 package org.aikidistas.highfrequencytrading.aeron;
 
 import api.wss.handler.IMessageHandler;
+import api.wss.handler.TickerUsdtEthMessageHandler;
+import api.wss.model.PoloniexWSSTickerDto;
 import io.aeron.Aeron;
 import io.aeron.Publication;
+import lombok.extern.log4j.Log4j2;
 import org.agrona.BufferUtil;
 import org.agrona.concurrent.UnsafeBuffer;
 
-public class WssToAeronMessageHandler implements IMessageHandler {
-    public static final Aeron.Context AERON_CONTEXT = new Aeron.Context();
-    private static final int STREAM_ID = SampleConfiguration.STREAM_ID;
-    private static final String CHANNEL = SampleConfiguration.CHANNEL;
-    private final UnsafeBuffer buffer = new UnsafeBuffer(BufferUtil.allocateDirectAligned(256, 64));
+import java.util.Objects;
 
-    public WssToAeronMessageHandler() {
-        System.out.println("Publishing to " + CHANNEL + " on stream id " + STREAM_ID);
+@Log4j2
+public class WssToAeronMessageHandler implements IMessageHandler {
+    //    private final UnsafeBuffer buffer = new UnsafeBuffer(BufferUtil.allocateDirectAligned(256, 64));
+    private final UnsafeBuffer buffer = new UnsafeBuffer(BufferUtil.allocateDirectAligned(512, 64));
+
+    private final Aeron aeron;
+    private final Publication publication;
+
+    public WssToAeronMessageHandler(Aeron aeron, Publication publication) {
+        this.aeron = aeron;
+        this.publication = publication;
+
+        log.info("AERON. Publishing to " + publication.channel() + " on stream id " + publication.streamId());
     }
 
     @Override
     public void handle(String message) {
+        PoloniexWSSTickerDto tickerDto = TickerUsdtEthMessageHandler.mapMessageToPoloniexTicker(message);
+        if (Objects.isNull(tickerDto)) {
+            return;
+        }
 
-        try (
-                Aeron aeron = Aeron.connect(AERON_CONTEXT);
-                Publication publication = aeron.addPublication(CHANNEL, STREAM_ID)
-        ) {
-
-            final int length = buffer.putStringWithoutLengthAscii(0, message);
+        final int length = buffer.putStringWithoutLengthAscii(0, tickerDto.toString());
 
 
-            long result = Long.MIN_VALUE;
+        long result = Long.MIN_VALUE;
 
-            while (result <= 0) { // retry until success, or impossible
-                result = publication.offer(buffer, 0, length);
+        while (result <= 0) { // retry until success, or impossible
+            result = publication.offer(buffer, 0, length);
 
-                if (result > 0) {
-                    System.out.println("yay!");
-                } else if (result == Publication.BACK_PRESSURED) {
-                    System.out.println("[Retry...]        Offer failed due to back pressure.");
-                } else if (result == Publication.NOT_CONNECTED) {
-                    System.out.println("[Lost message!!!] Offer failed because publisher is not connected to a subscriber");
-                    return;
-                } else if (result == Publication.ADMIN_ACTION) {
-                    System.out.println("[Retry...]        Offer failed because of an administration action in the system");
-                } else if (result == Publication.CLOSED) {
-                    System.out.println("[Lost message!!!] Offer failed because publication is closed");
-                    return;
-                } else if (result == Publication.MAX_POSITION_EXCEEDED) {
-                    System.out.println("[Lost message!!!] Offer failed due to publication reaching its max position");
-                    return;
-                } else {
-                    System.out.println("[Lost message!!!] Offer failed due to unknown reason: " + result);
-                    return;
-                }
+            if (result > 0) {
+                log.info("yay!");
+            } else if (result == Publication.BACK_PRESSURED) {
+                log.warn("[Retry...]        Offer failed due to back pressure.");
+            } else if (result == Publication.NOT_CONNECTED) {
+                log.error("[Lost message!!!] Offer failed because publisher is not connected to a subscriber");
+                return;
+            } else if (result == Publication.ADMIN_ACTION) {
+                log.warn("[Retry...]        Offer failed because of an administration action in the system");
+            } else if (result == Publication.CLOSED) {
+                log.error("[Lost message!!!] Offer failed because publication is closed");
+                return;
+            } else if (result == Publication.MAX_POSITION_EXCEEDED) {
+                log.error("[Lost message!!!] Offer failed due to publication reaching its max position");
+                return;
+            } else {
+                log.error("[Lost message!!!] Offer failed due to unknown reason: " + result);
+                return;
             }
+        }
 
 
-            if (!publication.isConnected()) {
-                System.out.println("No active subscribers detected");
-            }
-
-
+        if (!publication.isConnected()) {
+            System.out.println("No active subscribers detected");
         }
     }
 
