@@ -20,7 +20,7 @@
         </Async>
     </Appenders>
     <Loggers>
-        <Root level="trace">
+        <Root level="info">
             <AppenderRef ref="AsyncError"/>
         </Root>
     </Loggers>

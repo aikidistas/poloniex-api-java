@@ -8,23 +8,21 @@ import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.websocketx.*;
 import io.netty.util.CharsetUtil;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.Map;
 
+@Log4j2
 public class PoloniexWSSClientRouter extends SimpleChannelInboundHandler<Object> {
 
-    private final static Logger LOG = LogManager.getLogger();
     private static final int MAX_FRAME_LENGTH = 1262144;
 
     private final WebSocketClientHandshaker handshaker;
-    private ChannelPromise handshakeFuture;    
+    private ChannelPromise handshakeFuture;
     private boolean running;
-    
+
     private Map<Double, IMessageHandler> subscriptions;
     private final IMessageHandler defaultSubscriptionMessageHandler;
     private final Gson gson;
@@ -57,7 +55,7 @@ public class PoloniexWSSClientRouter extends SimpleChannelInboundHandler<Object>
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        LOG.trace("WebSocket Client disconnected!");
+        log.trace("WebSocket Client disconnected!");
     }
 
     @Override
@@ -67,10 +65,10 @@ public class PoloniexWSSClientRouter extends SimpleChannelInboundHandler<Object>
             try {
                 handshaker.finishHandshake(ch, (FullHttpResponse) msg);
                 running = true;
-                LOG.trace("WebSocket Client connected!");
+                log.trace("WebSocket Client connected!");
                 handshakeFuture.setSuccess();
             } catch (WebSocketHandshakeException e) {
-                LOG.trace("WebSocket Client failed to connect");
+                log.trace("WebSocket Client failed to connect");
                 running = false;
                 handshakeFuture.setFailure(e);
             }
@@ -86,12 +84,14 @@ public class PoloniexWSSClientRouter extends SimpleChannelInboundHandler<Object>
         WebSocketFrame frame = (WebSocketFrame) msg;
         if (frame instanceof TextWebSocketFrame) {
             TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
-            LOG.trace("WebSocket Client received message: " + textFrame.text());
-            List results = this.gson.fromJson(textFrame.text(), List.class);
-            this.subscriptions.getOrDefault(results.get(0), this.defaultSubscriptionMessageHandler).handle(textFrame.text());
-            
+            log.trace("WebSocket Client received message: " + textFrame.text());
+
+//            List results = this.gson.fromJson(textFrame.text(), List.class); // TODO: handle wrong conversion. Expected BEGIN_ARRAY but was BEGIN_OBJECT
+//            this.subscriptions.getOrDefault(results.get(0), this.defaultSubscriptionMessageHandler).handle(textFrame.text());
+            this.subscriptions.values().forEach(handler -> handler.handle(textFrame.text()));
+
         } else if (frame instanceof CloseWebSocketFrame) {
-            LOG.trace("WebSocket Client received closing");
+            log.trace("WebSocket Client received closing");
             running = false;
             ch.close();
         }
@@ -100,7 +100,7 @@ public class PoloniexWSSClientRouter extends SimpleChannelInboundHandler<Object>
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        LOG.error(cause);
+        log.error(cause);
         if (!handshakeFuture.isDone()) {
             handshakeFuture.setFailure(cause);
         }

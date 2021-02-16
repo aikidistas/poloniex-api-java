@@ -1,23 +1,21 @@
-package org.aikidistas.example;
+package org.aikidistas.highfrequencytrading.aeron;
 
 import api.wss.WSSClient;
 import api.wss.handler.LoggingMessageHandler;
-import api.wss.handler.TickerMessageHandler;
 import api.wss.model.PoloniexWSSSubscription;
 import lombok.extern.log4j.Log4j2;
 
 /**
- *
  * @author David
  */
 @Log4j2
-public class PoloniexWSSClientExample {
+public class PoloniexWSSClient {
 
     private static final String ENDPOINT_URL = "wss://api2.poloniex.com";
 
     public static void main(String[] args) {
         try {
-            new PoloniexWSSClientExample().subscribe();
+            new PoloniexWSSClient().subscribe();
         } catch (InterruptedException ex) {
             log.info(ex.getMessage());
             System.exit(0);
@@ -29,9 +27,10 @@ public class PoloniexWSSClientExample {
 
     public void subscribe() throws Exception {
         try (WSSClient wssClient = new WSSClient(ENDPOINT_URL)) {
-            wssClient.addSubscription(PoloniexWSSSubscription.HEARTBEAT, new LoggingMessageHandler());
-            wssClient.addSubscription(PoloniexWSSSubscription.TICKER, new TickerMessageHandler());
-            wssClient.run(600000);
+//            wssClient.addSubscription(PoloniexWSSSubscription.TICKER, new WssToAeronMessageHandler());
+            wssClient.addSubscription(PoloniexWSSSubscription.TICKER, new LoggingMessageHandler());
+//            wssClient.run(Long.MAX_VALUE/2);
+            wssClient.run(60000);
         }
 
     }
