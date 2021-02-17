@@ -4,7 +4,6 @@ package org.aikidistas.highfrequencytrading.aeron;
 import api.wss.handler.IMessageHandler;
 import api.wss.handler.TickerUsdtEthMessageHandler;
 import api.wss.model.PoloniexWSSTickerDto;
-import io.aeron.Aeron;
 import io.aeron.Publication;
 import lombok.extern.log4j.Log4j2;
 import org.agrona.BufferUtil;
@@ -17,11 +16,9 @@ public class WssToAeronMessageHandler implements IMessageHandler {
     //    private final UnsafeBuffer buffer = new UnsafeBuffer(BufferUtil.allocateDirectAligned(256, 64));
     private final UnsafeBuffer buffer = new UnsafeBuffer(BufferUtil.allocateDirectAligned(512, 64));
 
-    private final Aeron aeron;
     private final Publication publication;
 
-    public WssToAeronMessageHandler(Aeron aeron, Publication publication) {
-        this.aeron = aeron;
+    public WssToAeronMessageHandler(Publication publication) {
         this.publication = publication;
 
         log.info("AERON. Publishing to " + publication.channel() + " on stream id " + publication.streamId());

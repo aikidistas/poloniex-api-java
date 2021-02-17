@@ -10,15 +10,15 @@ import org.aikidistas.highfrequencytrading.App;
 import java.util.concurrent.TimeUnit;
 
 @Log4j2
-public class WssToAeronApp implements App {
+public class AeronPublisherApp implements App {
 
     private static final String ENDPOINT_URL = "wss://api2.poloniex.com";
-    public static final Aeron.Context AERON_CONTEXT = new Aeron.Context();
+    private final Aeron.Context AERON_CONTEXT = new Aeron.Context();
     private static final int STREAM_ID = SampleConfiguration.STREAM_ID;
     private static final String CHANNEL = SampleConfiguration.CHANNEL;
 
     public static void main(String[] args) {
-        App app = new WssToAeronApp();
+        App app = new AeronPublisherApp();
         app.run();
 
     }
@@ -26,7 +26,7 @@ public class WssToAeronApp implements App {
     @Override
     public void run() {
         try {
-            new WssToAeronApp().subscribe();
+            new AeronPublisherApp().subscribe();
         } catch (InterruptedException ex) {
             log.info(ex.getMessage());
             System.exit(0);
@@ -42,7 +42,7 @@ public class WssToAeronApp implements App {
              Aeron aeron = Aeron.connect(AERON_CONTEXT);
              Publication publication = aeron.addPublication(CHANNEL, STREAM_ID)
         ) {
-            wssClient.addSubscription(PoloniexWSSSubscription.TICKER, new WssToAeronMessageHandler(aeron, publication));
+            wssClient.addSubscription(PoloniexWSSSubscription.TICKER, new WssToAeronMessageHandler(publication));
             wssClient.run(TimeUnit.DAYS.toMillis(1));
         }
     }
