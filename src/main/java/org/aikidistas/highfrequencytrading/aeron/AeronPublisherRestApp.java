@@ -9,6 +9,7 @@ import lombok.SneakyThrows;
 import org.agrona.BufferUtil;
 import org.agrona.CloseHelper;
 import org.agrona.concurrent.UnsafeBuffer;
+import org.aikidistas.highfrequencytrading.aeron.config.SampleConfiguration;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  * -Daeron.sample.channel=aeron:udp?endpoint=localhost:5555 -Daeron.sample.streamId=20
  */
 
-public class RestPublisherApp {
+public class AeronPublisherRestApp {
     public static final TickerData.Smart TICKER = new Ticker.Smart(new Ticker());
     private static final int STREAM_ID = SampleConfiguration.STREAM_ID;
     private static final String CHANNEL = SampleConfiguration.CHANNEL;

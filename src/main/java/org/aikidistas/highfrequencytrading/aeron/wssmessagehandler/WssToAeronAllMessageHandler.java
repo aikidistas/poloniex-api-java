@@ -1,24 +1,22 @@
 
-package org.aikidistas.highfrequencytrading.aeron;
+package org.aikidistas.highfrequencytrading.aeron.wssmessagehandler;
 
 import api.wss.handler.IMessageHandler;
-import api.wss.handler.TickerUsdtEthMessageHandler;
-import api.wss.model.PoloniexWSSTickerDto;
+import com.google.gson.Gson;
 import io.aeron.Publication;
 import lombok.extern.log4j.Log4j2;
 import org.agrona.BufferUtil;
 import org.agrona.concurrent.UnsafeBuffer;
 
-import java.util.Objects;
-
 @Log4j2
-public class WssToAeronMessageHandler implements IMessageHandler {
-    //    private final UnsafeBuffer buffer = new UnsafeBuffer(BufferUtil.allocateDirectAligned(256, 64));
-    private final UnsafeBuffer buffer = new UnsafeBuffer(BufferUtil.allocateDirectAligned(512, 64));
+public class WssToAeronAllMessageHandler implements IMessageHandler {
+    private final UnsafeBuffer buffer = new UnsafeBuffer(BufferUtil.allocateDirectAligned(256, 64));
+    //    private final UnsafeBuffer buffer = new UnsafeBuffer(BufferUtil.allocateDirectAligned(512, 64));
+    private final Gson gson = new Gson();
 
     private final Publication publication;
 
-    public WssToAeronMessageHandler(Publication publication) {
+    public WssToAeronAllMessageHandler(Publication publication) {
         this.publication = publication;
 
         log.info("AERON. Publishing to " + publication.channel() + " on stream id " + publication.streamId());
@@ -26,12 +24,22 @@ public class WssToAeronMessageHandler implements IMessageHandler {
 
     @Override
     public void handle(String message) {
-        PoloniexWSSTickerDto tickerDto = TickerUsdtEthMessageHandler.mapMessageToPoloniexTicker(message);
-        if (Objects.isNull(tickerDto)) {
+        if (!publication.isConnected()) {
+            log.error("[Lost message!!!] No active subscribers detected");
             return;
         }
 
-        final int length = buffer.putStringWithoutLengthAscii(0, tickerDto.toString());
+        if (filtered(message)) {
+            return;
+        }
+        publishToAeron(message);
+
+    }
+
+    private void publishToAeron(String message) {
+        //        final int length = buffer.putStringWithoutLengthAscii(0, tickerDto.toString());     // put Lombok.toString with type information
+//        final int length = buffer.putStringWithoutLengthAscii(0, gson.toJson(tickerDto));   // put json (without type information)
+        final int length = buffer.putStringWithoutLengthAscii(0, message);                  // put poloniex wss message
 
 
         long result = Long.MIN_VALUE;
@@ -59,11 +67,10 @@ public class WssToAeronMessageHandler implements IMessageHandler {
                 return;
             }
         }
+    }
 
-
-        if (!publication.isConnected()) {
-            System.out.println("No active subscribers detected");
-        }
+    protected boolean filtered(String message) {
+        return false; // message.startsWith("[1002,null,[149,");
     }
 
 }
