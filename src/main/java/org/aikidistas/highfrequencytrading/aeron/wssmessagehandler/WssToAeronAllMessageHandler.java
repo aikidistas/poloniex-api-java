@@ -2,7 +2,6 @@
 package org.aikidistas.highfrequencytrading.aeron.wssmessagehandler;
 
 import api.wss.handler.IMessageHandler;
-import com.google.gson.Gson;
 import io.aeron.Publication;
 import lombok.extern.log4j.Log4j2;
 import org.agrona.BufferUtil;
@@ -12,7 +11,6 @@ import org.agrona.concurrent.UnsafeBuffer;
 public class WssToAeronAllMessageHandler implements IMessageHandler {
     private final UnsafeBuffer buffer = new UnsafeBuffer(BufferUtil.allocateDirectAligned(256, 64));
     //    private final UnsafeBuffer buffer = new UnsafeBuffer(BufferUtil.allocateDirectAligned(512, 64));
-    private final Gson gson = new Gson();
 
     private final Publication publication;
 

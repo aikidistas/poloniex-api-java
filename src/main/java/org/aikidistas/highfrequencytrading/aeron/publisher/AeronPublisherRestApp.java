@@ -1,4 +1,4 @@
-package org.aikidistas.highfrequencytrading.aeron;
+package org.aikidistas.highfrequencytrading.aeron.publisher;
 
 import api.rest.publicapi.read.ticker.Ticker;
 import api.rest.publicapi.read.ticker.TickerData;

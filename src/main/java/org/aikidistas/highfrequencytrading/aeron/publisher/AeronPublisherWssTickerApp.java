@@ -1,4 +1,4 @@
-package org.aikidistas.highfrequencytrading.aeron;
+package org.aikidistas.highfrequencytrading.aeron.publisher;
 
 import api.wss.WSSClient;
 import api.wss.model.PoloniexWSSSubscription;
@@ -38,12 +38,23 @@ public class AeronPublisherWssTickerApp implements App {
     }
 
     public void subscribe() throws Exception {
-        try (WSSClient wssClient = new WSSClient(ENDPOINT_URL);
-             Aeron aeron = Aeron.connect(AERON_CONTEXT);
+        try (Aeron aeron = Aeron.connect(AERON_CONTEXT);
              Publication publication = aeron.addPublication(CHANNEL, STREAM_ID)
         ) {
-            wssClient.addSubscription(PoloniexWSSSubscription.TICKER, new WssToAeronTickerMessageHandler(publication));
-            wssClient.run(TimeUnit.DAYS.toMillis(1));
+            while (true) {
+                try (WSSClient wssClient = new WSSClient(ENDPOINT_URL)) {
+                    wssClient.addSubscription(PoloniexWSSSubscription.TICKER, new WssToAeronTickerMessageHandler(publication));
+                    wssClient.run(TimeUnit.MINUTES.toMillis(1));
+                    // todo: throw exception when heartbeat or other message not received for 2 sec
+
+                } catch (WssDisconnectedException e) {
+                    // reconnect
+                    // todo: do not use WssDisconnectedException exception for flow control
+                } catch (InterruptedException ex) {
+                    // reconnect
+                    // todo: remove this temporary 1 min restarting hack/fix when added WssDisconnectedException throwing
+                }
+            }
         }
     }
 }

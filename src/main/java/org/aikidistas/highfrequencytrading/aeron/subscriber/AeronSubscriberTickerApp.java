@@ -1,4 +1,4 @@
-package org.aikidistas.highfrequencytrading.aeron;
+package org.aikidistas.highfrequencytrading.aeron.subscriber;
 
 import io.aeron.Aeron;
 import io.aeron.FragmentAssembler;

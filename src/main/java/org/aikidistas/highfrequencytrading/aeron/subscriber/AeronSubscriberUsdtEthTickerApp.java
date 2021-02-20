@@ -1,4 +1,4 @@
-package org.aikidistas.highfrequencytrading.aeron;
+package org.aikidistas.highfrequencytrading.aeron.subscriber;
 
 import io.aeron.Aeron;
 import io.aeron.FragmentAssembler;
@@ -9,7 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.agrona.concurrent.IdleStrategy;
 import org.agrona.concurrent.SigInt;
 import org.aikidistas.highfrequencytrading.App;
-import org.aikidistas.highfrequencytrading.aeron.aeronfragmenthandler.PrintAsciMessageFragmentHandler;
+import org.aikidistas.highfrequencytrading.aeron.aeronfragmenthandler.PrintAsciUsdtEthTickerMessageFragmentHandler;
 import org.aikidistas.highfrequencytrading.aeron.config.SampleConfiguration;
 
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -28,17 +28,17 @@ import java.util.function.Consumer;
  * {@link MultipleSubscribersWithFragmentAssembly}.
  */
 @Log4j2
-public class AeronSubscriberAllApp implements App {
+public class AeronSubscriberUsdtEthTickerApp implements App {
     private static final int STREAM_ID = SampleConfiguration.STREAM_ID;
     private static final String CHANNEL = SampleConfiguration.CHANNEL;
     private static final int FRAGMENT_COUNT_LIMIT = SampleConfiguration.FRAGMENT_COUNT_LIMIT;
 
     private final Aeron.Context aeronContext = new Aeron.Context()
-            .availableImageHandler(AeronSubscriberAllApp::printAvailableImage)
-            .unavailableImageHandler(AeronSubscriberAllApp::printUnavailableImage);
+            .availableImageHandler(AeronSubscriberUsdtEthTickerApp::printAvailableImage)
+            .unavailableImageHandler(AeronSubscriberUsdtEthTickerApp::printUnavailableImage);
 
     public static void main(final String[] args) {
-        App app = new AeronSubscriberAllApp();
+        App app = new AeronSubscriberUsdtEthTickerApp();
         app.run();
     }
 
@@ -95,7 +95,7 @@ public class AeronSubscriberAllApp implements App {
     public void run() {
         System.out.println("Subscribing to " + CHANNEL + " on stream id " + STREAM_ID);
 
-        final FragmentHandler fragmentHandler = new PrintAsciMessageFragmentHandler();
+        final FragmentHandler fragmentHandler = new PrintAsciUsdtEthTickerMessageFragmentHandler();
         final AtomicBoolean running = new AtomicBoolean(true);
 
         // Register a SIGINT handler for graceful shutdown.
